@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Virtual Production Type Varya LLC
- * Plugin URI: https://varya.studio
+ * Plugin URI: https://github.com/ReunionRS/Custom-type-for-Virtual-Production
  * Description: Кастомные типы записей для портала Vprussia
  * Version: 1.0.0
  * Author: Ilya Smirnov
