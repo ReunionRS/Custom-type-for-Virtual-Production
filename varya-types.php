@@ -3,7 +3,7 @@
  * Plugin Name: Virtual Production Type Varya LLC
  * Plugin URI: https://github.com/ReunionRS/Custom-type-for-Virtual-Production
  * Description: Кастомные типы записей для портала Vprussia
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Ilya Smirnov
  * Author URI: https://www.youtube.com/@IlyaSmirnov-z4n
  * Text Domain: vp-types
@@ -17,13 +17,9 @@ class VP_Types {
     
     public function __construct() {
         add_action('init', array($this, 'register_post_types'));
-        
         add_action('init', array($this, 'register_taxonomies'));
-        
         add_action('cmb2_admin_init', array($this, 'register_metaboxes'));
-        
         add_action('admin_init', array($this, 'check_dependencies'));
-        
         add_action('cmb2_admin_init', array($this, 'register_relationships'));
     }
     
@@ -48,7 +44,7 @@ class VP_Types {
             });
         }
     }
-    
+
     public function register_post_types() {
         register_post_type('vp_venue', array(
             'labels' => array(
@@ -168,33 +164,32 @@ class VP_Types {
         
         register_post_type('vp_specialist', array(
             'labels' => array(
-        'name'               => __('Специалисты', 'vp-types'),
-        'singular_name'      => __('Специалист', 'vp-types'),
-        'add_new'            => __('Добавить специалиста', 'vp-types'),
-        'add_new_item'       => __('Добавить нового специалиста', 'vp-types'),
-        'edit_item'          => __('Редактировать специалиста', 'vp-types'),
-        'new_item'           => __('Новый специалист', 'vp-types'),
-        'view_item'          => __('Просмотр специалиста', 'vp-types'),
-        'search_items'       => __('Поиск специалистов', 'vp-types'),
-        'not_found'          => __('Специалисты не найдены', 'vp-types'),
-        'not_found_in_trash' => __('В корзине не найдено специалистов', 'vp-types'),
-        'menu_name'          => __('Специалисты', 'vp-types'),
-    ),
-    'public'              => true,
-    'publicly_queryable'  => true,
-    'show_ui'             => true,
-    'show_in_menu'        => true,
-    'menu_icon'           => 'dashicons-businessman',
-    'query_var'           => true,
-    'rewrite'             => array('slug' => 'vp-specialist'),
-    'capability_type'     => 'post',
-    'has_archive'         => true,
-    'hierarchical'        => false,
-    'menu_position'       => 9,
-    'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
-    'show_in_rest'        => true,
-));
-        
+                'name'               => __('Специалисты', 'vp-types'),
+                'singular_name'      => __('Специалист', 'vp-types'),
+                'add_new'            => __('Добавить специалиста', 'vp-types'),
+                'add_new_item'       => __('Добавить нового специалиста', 'vp-types'),
+                'edit_item'          => __('Редактировать специалиста', 'vp-types'),
+                'new_item'           => __('Новый специалист', 'vp-types'),
+                'view_item'          => __('Просмотр специалиста', 'vp-types'),
+                'search_items'       => __('Поиск специалистов', 'vp-types'),
+                'not_found'          => __('Специалисты не найдены', 'vp-types'),
+                'not_found_in_trash' => __('В корзине не найдено специалистов', 'vp-types'),
+                'menu_name'          => __('Специалисты', 'vp-types'),
+            ),
+            'public'              => true,
+            'publicly_queryable'  => true,
+            'show_ui'             => true,
+            'show_in_menu'        => true,
+            'menu_icon'           => 'dashicons-businessman',
+            'query_var'           => true,
+            'rewrite'             => array('slug' => 'vp-specialist'),
+            'capability_type'     => 'post',
+            'has_archive'         => true,
+            'hierarchical'        => false,
+            'menu_position'       => 9,
+            'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'show_in_rest'        => true,
+        ));
         
         if (class_exists('WooCommerce')) {
             register_taxonomy('vp_equipment_type', array('product'), array(
@@ -248,7 +243,7 @@ class VP_Types {
             });
         }
     }
-    
+
     public function register_taxonomies() {
         register_taxonomy('vp_project_type', array('vp_production'), array(
             'hierarchical'      => true,
@@ -316,7 +311,7 @@ class VP_Types {
             'show_in_rest'      => true,
         ));
     }
-    
+
     public function register_metaboxes() {
         if (!class_exists('CMB2')) {
             return;
@@ -332,203 +327,363 @@ class VP_Types {
         ));
         
         $venue_metabox->add_field(array(
-            'name'    => __('Адрес расположения', 'vp-types'),
+            'name'    => __('Город', 'vp-types'),
+            'id'      => 'vp_venue_city',
+            'type'    => 'text',
+            'default' => 'Москва',
+        ));
+        
+        $venue_metabox->add_field(array(
+            'name'    => __('Адрес', 'vp-types'),
             'id'      => 'vp_venue_address',
             'type'    => 'text',
             'desc'    => __('Полный адрес площадки', 'vp-types'),
         ));
         
         $venue_metabox->add_field(array(
-            'name'    => __('Размер площадки (кв.м)', 'vp-types'),
+            'name'    => __('Размер площадки (м²)', 'vp-types'),
             'id'      => 'vp_venue_size',
             'type'    => 'text',
             'desc'    => __('Площадь помещения в квадратных метрах', 'vp-types'),
         ));
         
         $venue_metabox->add_field(array(
-            'name'    => __('Режим работы', 'vp-types'),
-            'id'      => 'vp_venue_working_hours',
-            'type'    => 'textarea_small',
-            'desc'    => __('Часы работы площадки', 'vp-types'),
+            'name'    => __('Рабочие дни', 'vp-types'),
+            'id'      => 'vp_venue_working_days',
+            'type'    => 'multicheck',
+            'options' => array(
+                'monday'    => __('Понедельник', 'vp-types'),
+                'tuesday'   => __('Вторник', 'vp-types'),
+                'wednesday' => __('Среда', 'vp-types'),
+                'thursday'  => __('Четверг', 'vp-types'),
+                'friday'    => __('Пятница', 'vp-types'),
+                'saturday'  => __('Суббота', 'vp-types'),
+                'sunday'    => __('Воскресенье', 'vp-types'),
+            ),
+            'default' => array('monday', 'tuesday', 'wednesday', 'thursday', 'friday'),
         ));
-        
-        $venue_equipment_group = $venue_metabox->add_field(array(
-            'id'          => 'vp_venue_equipment',
+
+        $chromakey_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_chromakey',
             'type'        => 'group',
-            'description' => __('Техническое оснащение площадки', 'vp-types'),
+            'description' => __('Хромакей оснащение', 'vp-types'),
             'options'     => array(
-                'group_title'   => __('Оснащение {#}', 'vp-types'),
-                'add_button'    => __('Добавить оснащение', 'vp-types'),
+                'group_title'   => __('Хромакей {#}', 'vp-types'),
+                'add_button'    => __('Добавить хромакей', 'vp-types'),
                 'remove_button' => __('Удалить', 'vp-types'),
                 'sortable'      => true,
             ),
         ));
         
-        $venue_metabox->add_group_field($venue_equipment_group, array(
-            'name'    => __('Тип оснащения', 'vp-types'),
-            'id'      => 'type',
+        $venue_metabox->add_group_field($chromakey_group, array(
+            'name'    => __('Конструкция', 'vp-types'),
+            'id'      => 'construction',
             'type'    => 'select',
             'options' => array(
-                'chromakey'      => __('Хромакей', 'vp-types'),
-                'videowall'      => __('Видеостена', 'vp-types'),
-                'other'          => __('Другое', 'vp-types'),
+                ''          => __('-- Не указана --', 'vp-types'),
+                'cyclorama' => __('Циклорама', 'vp-types'),
+                'cloth'     => __('Полотно', 'vp-types'),
+            ),
+        ));
+        
+        $venue_metabox->add_group_field($chromakey_group, array(
+            'name'    => __('Высота (м)', 'vp-types'),
+            'id'      => 'height',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($chromakey_group, array(
+            'name'    => __('Ширина (м)', 'vp-types'),
+            'id'      => 'width',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($chromakey_group, array(
+            'name'    => __('Глубина (м)', 'vp-types'),
+            'id'      => 'depth',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($chromakey_group, array(
+            'name'    => __('Цвет', 'vp-types'),
+            'id'      => 'color',
+            'type'    => 'select',
+            'options' => array(
+                ''      => __('-- Не указан --', 'vp-types'),
+                'green' => __('Зеленый', 'vp-types'),
+                'blue'  => __('Синий', 'vp-types'),
+            ),
+        ));
+        
+        $videowall_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_videowall',
+            'type'        => 'group',
+            'description' => __('Видеостена', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Видеостена {#}', 'vp-types'),
+                'add_button'    => __('Добавить видеостену', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
+        
+        $venue_metabox->add_group_field($videowall_group, array(
+    'name'    => __('Шаг пикселя', 'vp-types'),
+    'id'      => 'pixel_pitch',
+    'type'    => 'select',
+    'options' => array(
+        ''      => __('-- Не указан --', 'vp-types'),
+        '0.6'   => '0.6',
+        '0.7'   => '0.7', 
+        '0.8'   => '0.8',
+        '0.9'   => '0.9',
+        '1.0'   => '1.0',
+        '1.2'   => '1.2',
+        '1.25'  => '1.25',
+        '1.4'   => '1.4',
+        '1.5'   => '1.5',
+        '1.56'  => '1.56',
+        '1.6'   => '1.6',
+        '1.8'   => '1.8',
+        '1.9'   => '1.9',
+        '2.0'   => '2.0',
+        '2.3'   => '2.3', 
+        '2.5'   => '2.5',
+        '2.6'   => '2.6',
+        '2.9'   => '2.9',
+        '3.0'   => '3.0',
+        '3.7'   => '3.7', 
+        '3.9'   => '3.9',
+        '4.0'   => '4.0',
+        '4.8'   => '4.8',
+        '5.0'   => '5.0',
+        '6.0'   => '6.0',
+        '6.25'  => '6.25',
+        '8.0'   => '8.0',
+        '10.0'  => '10.0',
+    ),
+));
+        
+        $venue_metabox->add_group_field($videowall_group, array(
+            'name'    => __('Площадь (м²)', 'vp-types'),
+            'id'      => 'area',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($videowall_group, array(
+            'name'    => __('Процессор марка', 'vp-types'),
+            'id'      => 'processor_brand',
+            'type'    => 'text',
+        ));
+
+        $venue_metabox->add_group_field($videowall_group, array(
+            'name'    => __('Возможность индивидуальной конфигурации видеостены', 'vp-types'),
+            'id'      => 'custom_configuration',
+            'type'    => 'checkbox',
+            'desc'    => __('Отметьте, если возможна индивидуальная конфигурация', 'vp-types'),
+        ));
+        
+        $venue_metabox->add_field(array(
+            'name'    => __('Интеграция DMX', 'vp-types'),
+            'id'      => 'vp_venue_dmx_integration',
+            'type'    => 'checkbox',
+            'desc'    => __('Отметьте, если есть интеграция DMX', 'vp-types'),
+        ));
+        
+        $cameras_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_cameras',
+            'type'        => 'group',
+            'description' => __('Видеокамеры с GenLock', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Камера {#}', 'vp-types'),
+                'add_button'    => __('Добавить камеру', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
+        
+        $venue_metabox->add_group_field($cameras_group, array(
+            'name'    => __('Модель', 'vp-types'),
+            'id'      => 'model',
+            'type'    => 'text',
+        ));
+        
+        $venue_metabox->add_group_field($cameras_group, array(
+            'name'    => __('Количество', 'vp-types'),
+            'id'      => 'count',
+            'type'    => 'text_small',
+        ));
+        
+        $equipment_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_equipment',
+            'type'        => 'group',
+            'description' => __('Штативы/краны/тележки', 'vp-types'),
+            'options'     => array(
+        'group_title'   => __('Оборудование {#}', 'vp-types'),
+        'add_button'    => __('Добавить оборудование', 'vp-types'),
+        'remove_button' => __('Удалить', 'vp-types'),
+        'sortable'      => true,
+    ),
+));
+        
+        $venue_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Тип оборудования', 'vp-types'),
+    'id'      => 'equipment_type',
+    'type'    => 'select',
+    'options' => array(
+        ''          => __('-- Выберите тип --', 'vp-types'),
+        'tripods'   => __('Штативы', 'vp-types'),
+        'cranes'    => __('Краны', 'vp-types'),
+        'dollies'   => __('Тележки', 'vp-types'),
+    ),
+));
+        
+        $venue_metabox->add_group_field($equipment_group, array(
+            'name'    => __('Количество', 'vp-types'),
+            'id'      => 'count',
+            'type'    => 'text_small',
+        ));
+        
+        $tracking_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_tracking',
+            'type'        => 'group',
+            'description' => __('Системы трекинга', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Система трекинга {#}', 'vp-types'),
+                'add_button'    => __('Добавить систему трекинга', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
+        
+        $venue_metabox->add_group_field($tracking_group, array(
+            'name'    => __('Марка', 'vp-types'),
+            'id'      => 'brand',
+            'type'    => 'text',
+        ));
+        
+        $venue_metabox->add_group_field($tracking_group, array(
+            'name'    => __('Количество', 'vp-types'),
+            'id'      => 'count',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($tracking_group, array(
+            'name'    => __('Площадь (м²)', 'vp-types'),
+            'id'      => 'area',
+            'type'    => 'text_small',
+        ));
+        
+        $venue_metabox->add_group_field($tracking_group, array(
+            'name'    => __('Высота (м)', 'vp-types'),
+            'id'      => 'height',
+            'type'    => 'text_small',
+        ));
+        
+        $calibration_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_calibration',
+            'type'        => 'group',
+            'description' => __('Система калибровки', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Система калибровки {#}', 'vp-types'),
+                'add_button'    => __('Добавить систему калибровки', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
+        
+        $venue_metabox->add_group_field($calibration_group, array(
+            'name'    => __('Марка', 'vp-types'),
+            'id'      => 'brand',
+            'type'    => 'text',
+        ));
+        
+        $venue_metabox->add_group_field($calibration_group, array(
+            'name'    => __('Скорость калибровки', 'vp-types'),
+            'id'      => 'speed_value',
+            'type'    => 'text_small',
+            'attributes' => array(
+                'style' => 'width: 80px; display: inline-block; margin-right: 10px;'
             ),
         ));
 
-        $venue_metabox->add_group_field($venue_equipment_group, array(
-            'name'    => __('Название оснащения', 'vp-types'),
-            'id'      => 'other_name',
-            'type'    => 'text',
+        $venue_metabox->add_group_field($calibration_group, array(
+            'name'    => __('Единица измерения', 'vp-types'),
+            'id'      => 'speed_unit',
+            'type'    => 'select',
+            'options' => array(
+                'hours'   => __('часов', 'vp-types'),
+                'minutes' => __('минут', 'vp-types'),
+                'seconds' => __('секунд', 'vp-types'),
+            ),
+            'default' => 'hours',
             'attributes' => array(
-            'data-conditional-id'    => '{#}type',
-            'data-conditional-value' => 'other',
+                'style' => 'width: 100px; display: inline-block;'
             ),
         ));
         
-        $venue_metabox->add_group_field($venue_equipment_group, array(
-            'name'    => __('Описание', 'vp-types'),
-            'id'      => 'description',
-            'type'    => 'textarea_small',
-        ));
-        
-        $venue_metabox->add_group_field($venue_equipment_group, array(
-            'name'    => __('Площадь видеостены (кв.м)', 'vp-types'),
-            'id'      => 'videowall_size',
-            'type'    => 'text',
-            'attributes' => array(
-                'data-conditional-id'    => '{#}type',
-                'data-conditional-value' => 'videowall',
+        $venue_metabox->add_group_field($calibration_group, array(
+            'name'    => __('Создание lens файла', 'vp-types'),
+            'id'      => 'lens_file_creation',
+            'type'    => 'select',
+            'options' => array(
+                ''    => __('-- Не указано --', 'vp-types'),
+                'yes' => __('Да', 'vp-types'),
+                'no'  => __('Нет', 'vp-types'),
             ),
         ));
         
-        $venue_metabox->add_group_field($venue_equipment_group, array(
-            'name'    => __('Зерно (пиксель)', 'vp-types'),
-            'id'      => 'videowall_pixel_pitch',
-            'type'    => 'text',
-            'attributes' => array(
-                'data-conditional-id'    => '{#}type',
-                'data-conditional-value' => 'videowall',
+        $venue_metabox->add_group_field($calibration_group, array(
+            'name'    => __('Калибровка пространств', 'vp-types'),
+            'id'      => 'space_calibration',
+            'type'    => 'select',
+            'options' => array(
+                ''    => __('-- Не указано --', 'vp-types'),
+                'yes' => __('Да', 'vp-types'),
+                'no'  => __('Нет', 'vp-types'),
             ),
         ));
         
-        $venue_lighting_group = $venue_metabox->add_field(array(
-            'id'          => 'vp_venue_lighting',
+        $render_group = $venue_metabox->add_field(array(
+            'id'          => 'vp_venue_render_servers',
             'type'        => 'group',
-            'description' => __('Освещение', 'vp-types'),
+            'description' => __('Рендер сервера', 'vp-types'),
             'options'     => array(
-                'group_title'   => __('Освещение {#}', 'vp-types'),
-                'add_button'    => __('Добавить освещение', 'vp-types'),
-                'remove_button' => __('Удалить', 'vp-types'),
-                'sortable'      => true,
-            ),
-        ));
-
-        $venue_metabox->add_group_field($venue_lighting_group, array(
-            'name'    => __('Название освещения', 'vp-types'),
-            'id'      => 'name',
-            'type'    => 'text',
-        ));
-        
-        $venue_metabox->add_group_field($venue_lighting_group, array(
-            'name'    => __('Мощность', 'vp-types'),
-            'id'      => 'power',
-            'type'    => 'text',
-        ));
-        
-        $venue_metabox->add_group_field($venue_lighting_group, array(
-            'name'    => __('Интеграция с VP трактом', 'vp-types'),
-            'id'      => 'vp_integration',
-            'type'    => 'checkbox',
-        ));
-        
-        $venue_metabox->add_group_field($venue_lighting_group, array(
-            'name'    => __('Описание оборудования', 'vp-types'),
-            'id'      => 'equipment_description',
-            'type'    => 'textarea_small',
-        ));
-        
-        $video_system_group = $venue_metabox->add_field(array(
-            'id'          => 'vp_venue_video_system',
-            'type'        => 'group',
-            'description' => __('Видеотракт', 'vp-types'),
-            'options'     => array(
-                'group_title'   => __('Видеотракт', 'vp-types'),
-                'add_button'    => __('Добавить компонент', 'vp-types'),
+                'group_title'   => __('Рендер сервер {#}', 'vp-types'),
+                'add_button'    => __('Добавить рендер сервер', 'vp-types'),
                 'remove_button' => __('Удалить', 'vp-types'),
                 'sortable'      => true,
             ),
         ));
         
-        $venue_metabox->add_group_field($video_system_group, array(
-            'name'    => __('Количество видеокамер', 'vp-types'),
-            'id'      => 'camera_count',
+        $venue_metabox->add_group_field($render_group, array(
+            'name'    => __('Модель видеокарты', 'vp-types'),
+            'id'      => 'gpu_model',
             'type'    => 'text',
         ));
         
-        $venue_metabox->add_group_field($video_system_group, array(
-            'name'    => __('Наличие генлока', 'vp-types'),
-            'id'      => 'genlock',
-            'type'    => 'checkbox',
-        ));
-        
-        $venue_metabox->add_group_field($video_system_group, array(
-            'name'    => __('Штативы', 'vp-types'),
-            'id'      => 'tripods',
-            'type'    => 'textarea_small',
-        ));
-        
-        $venue_metabox->add_field(array(
-            'name'    => __('Наличие звукового тракта', 'vp-types'),
-            'id'      => 'vp_venue_audio_system',
-            'type'    => 'checkbox',
-            'desc'    => __('Отметьте, если площадка имеет звуковой тракт', 'vp-types'),
-        ));
-        
-        $venue_metabox->add_field(array(
-            'name'    => __('Описание звукового тракта', 'vp-types'),
-            'id'      => 'vp_venue_audio_system_desc',
-            'type'    => 'textarea_small',
-            'attributes' => array(
-                'data-conditional-id'    => 'vp_venue_audio_system',
-                'data-conditional-value' => 'on',
-            ),
-        ));
-        
-        $vp_system_group = $venue_metabox->add_field(array(
-            'id'          => 'vp_venue_vp_system',
-            'type'        => 'group',
-            'description' => __('VP тракт', 'vp-types'),
-            'options'     => array(
-                'group_title'   => __('VP система {#}', 'vp-types'),
-                'add_button'    => __('Добавить компонент VP тракта', 'vp-types'),
-                'remove_button' => __('Удалить', 'vp-types'),
-                'sortable'      => true,
-            ),
-        ));
-        
-        $venue_metabox->add_group_field($vp_system_group, array(
-            'name'    => __('Системы трекинга', 'vp-types'),
-            'id'      => 'tracking_systems',
-            'type'    => 'textarea_small',
-        ));
-        
-        $venue_metabox->add_group_field($vp_system_group, array(
-            'name'    => __('Рендер-сервера', 'vp-types'),
-            'id'      => 'render_servers',
-            'type'    => 'textarea_small',
-        ));
-        
-        $venue_metabox->add_group_field($vp_system_group, array(
-            'name'    => __('3D движок', 'vp-types'),
-            'id'      => 'game_engine',
+        $venue_metabox->add_group_field($render_group, array(
+            'name'    => __('Карта видеозахвата', 'vp-types'),
+            'id'      => 'capture_card_model',
             'type'    => 'text',
         ));
         
         $venue_metabox->add_field(array(
-            'name'    => __('Возможности трансляции', 'vp-types'),
-            'id'      => 'vp_venue_broadcast',
-            'type'    => 'textarea_small',
-            'desc'    => __('Информация о возможностях трансляции с площадки', 'vp-types'),
+            'name'    => __('UE версия', 'vp-types'),
+            'id'      => 'vp_venue_ue_version',
+            'type'    => 'text',
+            'desc'    => __('Версия Unreal Engine', 'vp-types'),
+        ));
+        
+        $venue_metabox->add_field(array(
+            'name'    => __('Возможности VP трансляции', 'vp-types'),
+            'id'      => 'vp_venue_broadcast_capabilities',
+            'type'    => 'select',
+            'options' => array(
+                ''    => __('-- Не указано --', 'vp-types'),
+                'yes' => __('Да', 'vp-types'),
+                'no'  => __('Нет', 'vp-types'),
+            ),
         ));
         
         $production_metabox = new_cmb2_box(array(
@@ -540,81 +695,145 @@ class VP_Types {
             'show_names'    => true,
         ));
         
-        $projects_group = $production_metabox->add_field(array(
-            'id'          => 'vp_production_projects',
-            'type'        => 'group',
-            'description' => __('Проекты', 'vp-types'),
-            'options'     => array(
-                'group_title'   => __('Проект {#}', 'vp-types'),
-                'add_button'    => __('Добавить проект', 'vp-types'),
-                'remove_button' => __('Удалить', 'vp-types'),
-                'sortable'      => true,
+        $production_metabox->add_field(array(
+            'name'    => __('Наличие площадки', 'vp-types'),
+            'id'      => 'vp_production_venue',
+            'type'    => 'select',
+            'desc'    => __('Выберите "Нет" или конкретную площадку', 'vp-types'),
+            'options_cb' => function() {
+                $options = array(
+                    ''   => __('-- Выберите --', 'vp-types'),
+                    'no' => __('Нет', 'vp-types'),
+                );
+
+                $venues = get_posts(array(
+                    'post_type'      => 'vp_venue',
+                    'posts_per_page' => -1,
+                    'orderby'        => 'title',
+                    'order'          => 'ASC',
+                ));
+                
+                foreach ($venues as $venue) {
+                    $options[$venue->ID] = $venue->post_title;
+                }
+                
+                return $options;
+            },
+        ));
+
+        $production_metabox->add_field(array(
+            'name'    => __('Типы проектов', 'vp-types'),
+            'id'      => 'vp_production_project_types',
+            'type'    => 'multicheck',
+            'options' => array(
+                'full_length'       => __('Полный метр', 'vp-types'),
+                'music_videos'      => __('Клипы', 'vp-types'),
+                'advertising'       => __('Реклама', 'vp-types'),
+                'sports_broadcast'  => __('Спортивные трансляции', 'vp-types'),
+                'event_filming'     => __('Съемка мероприятий', 'vp-types'),
+                'mocap_animation'   => __('Мокап анимация', 'vp-types'),
+                'corporate_video'   => __('Корпоративное видео', 'vp-types'),
+                'educational'       => __('Образовательный контент', 'vp-types'),
+            ),
+        ));
+
+        $production_metabox->add_field(array(
+            'name'    => __('Компетенции', 'vp-types'),
+            'id'      => 'vp_production_competencies',
+            'type'    => 'multicheck',
+            'options' => array(
+                'virtual_production' => __('Работа с Virtual Production', 'vp-types'),
+                'cgi'               => __('CGI', 'vp-types'),
+                'unreal_engine'     => __('Работа с Unreal Engine (UE)', 'vp-types'),
             ),
         ));
         
-        $production_metabox->add_group_field($projects_group, array(
-            'name'    => __('Название проекта', 'vp-types'),
-            'id'      => 'name',
-            'type'    => 'text',
-        ));
-        
-        $production_metabox->add_group_field($projects_group, array(
-            'name'    => __('Тип проекта', 'vp-types'),
-            'id'      => 'type',
+        $production_metabox->add_field(array(
+            'name'    => __('Наличие супервайзера', 'vp-types'),
+            'id'      => 'vp_production_has_supervisor',
             'type'    => 'select',
             'options' => array(
-                'movie'          => __('Полный метр', 'vp-types'),
-                'music_video'    => __('Клип', 'vp-types'),
-                'commercial'     => __('Реклама', 'vp-types'),
-                'sports'         => __('Спортивные трансляции', 'vp-types'),
-                'events'         => __('Съемка мероприятий', 'vp-types'),
-                'mocap'          => __('Макап анимация', 'vp-types'),
-                'corporate'      => __('Корпоративное видео', 'vp-types'),
-                'education'      => __('Образовательный контент', 'vp-types'),
-                'other'          => __('Другое', 'vp-types'),
+                ''    => __('-- Не указано --', 'vp-types'),
+                'yes' => __('Да', 'vp-types'),
+                'no'  => __('Нет', 'vp-types'),
             ),
         ));
         
-        $production_metabox->add_group_field($projects_group, array(
-            'name'    => __('Описание проекта', 'vp-types'),
-            'id'      => 'description',
-            'type'    => 'textarea_small',
-        ));
-        
         $production_metabox->add_field(array(
-            'name'          => __('Детали компетенций', 'vp-types'),
-            'id'            => 'vp_production_competency_details',
-            'type'          => 'textarea',
-            'desc'          => __('Дополнительная информация о компетенциях компании', 'vp-types'),
-        ));
-        
-        $production_metabox->add_field(array(
-            'name'    => __('Используемое ПО для монтажа', 'vp-types'),
-            'id'      => 'vp_production_software',
-            'type'    => 'text',
-        ));
-        
-        $production_metabox->add_field(array(
-            'name'    => __('Наличие операторов', 'vp-types'),
-            'id'      => 'vp_production_has_operators',
-            'type'    => 'checkbox',
+            'name'    => __('Подтвержденная квалификация VP (количество сертификатов)', 'vp-types'),
+            'id'      => 'vp_production_certificates_count',
+            'type'    => 'text_small',
+            'desc'    => __('Количество VP сертификатов', 'vp-types'),
         ));
         
         $manufacturer_metabox = new_cmb2_box(array(
-            'id'            => 'vp_manufacturer_metabox',
-            'title'         => __('Информация о производителе', 'vp-types'),
-            'object_types'  => array('vp_manufacturer'),
-            'context'       => 'normal',
-            'priority'      => 'high',
-            'show_names'    => true,
-        ));
-        
-        $manufacturer_metabox->add_field(array(
-            'name'    => __('Описание продукции', 'vp-types'),
-            'id'      => 'vp_manufacturer_products_description',
-            'type'    => 'textarea',
-            'desc'    => __('Описание продукции, связанной с VP', 'vp-types'),
-        ));
+    'id'            => 'vp_manufacturer_metabox',
+    'title'         => __('Информация о производителе', 'vp-types'),
+    'object_types'  => array('vp_manufacturer'),
+    'context'       => 'normal',
+    'priority'      => 'high',
+    'show_names'    => true,
+));
+
+$manufacturer_metabox->add_field(array(
+    'name'    => __('Город', 'vp-types'),
+    'id'      => 'vp_manufacturer_city',
+    'type'    => 'text',
+    'default' => 'Москва',
+    'desc'    => __('Город расположения производителя', 'vp-types'),
+));
+
+$manufacturer_metabox->add_field(array(
+    'name'    => __('Адрес', 'vp-types'),
+    'id'      => 'vp_manufacturer_address',
+    'type'    => 'text',
+    'desc'    => __('Полный адрес производителя', 'vp-types'),
+));
+
+$equipment_group = $manufacturer_metabox->add_field(array(
+    'id'          => 'vp_manufacturer_equipment',
+    'type'        => 'group',
+    'description' => __('Оборудование', 'vp-types'),
+    'options'     => array(
+        'group_title'   => __('Оборудование {#}', 'vp-types'),
+        'add_button'    => __('Добавить оборудование', 'vp-types'),
+        'remove_button' => __('Удалить', 'vp-types'),
+        'sortable'      => true,
+    ),
+));
+
+$manufacturer_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Название модели', 'vp-types'),
+    'id'      => 'model_name',
+    'type'    => 'text',
+    'desc'    => __('Название/модель оборудования', 'vp-types'),
+));
+
+$manufacturer_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Описание (характеристики)', 'vp-types'),
+    'id'      => 'description',
+    'type'    => 'textarea',
+    'desc'    => __('Подробное описание и характеристики оборудования', 'vp-types'),
+));
+
+$services_group = $manufacturer_metabox->add_field(array(
+    'id'          => 'vp_manufacturer_services',
+    'type'        => 'group',
+    'description' => __('Услуги', 'vp-types'),
+    'options'     => array(
+        'group_title'   => __('Услуга {#}', 'vp-types'),
+        'add_button'    => __('Добавить услугу', 'vp-types'),
+        'remove_button' => __('Удалить', 'vp-types'),
+        'sortable'      => true,
+    ),
+));
+
+$manufacturer_metabox->add_group_field($services_group, array(
+    'name'    => __('Описание услуги', 'vp-types'),
+    'id'      => 'service_description',
+    'type'    => 'textarea',
+    'desc'    => __('Подробное описание предоставляемой услуги', 'vp-types'),
+));
         
         $rental_metabox = new_cmb2_box(array(
             'id'            => 'vp_rental_metabox',
@@ -658,7 +877,7 @@ class VP_Types {
             'id'      => 'vp_specialist_contact',
             'type'    => 'textarea_small',
         ));
-        
+
         if (class_exists('WooCommerce')) {
             $wc_equipment_metabox = new_cmb2_box(array(
                 'id'            => 'vp_equipment_metabox',
@@ -746,7 +965,7 @@ class VP_Types {
             ));
         }
     }
-    
+
     public function register_relationships() {
         if (!class_exists('CMB2')) {
             return;
@@ -865,7 +1084,7 @@ function vp_venues_shortcode($atts) {
             $output .= '<div class="vp-venue-address"><strong>' . __('Адрес:', 'vp-types') . '</strong> ' . $address . '</div>';
         }
         if ($size) {
-            $output .= '<div class="vp-venue-size"><strong>' . __('Размер площадки:', 'vp-types') . '</strong> ' . $size . ' кв.м</div>';
+            $output .= '<div class="vp-venue-size"><strong>' . __('Размер площадки:', 'vp-types') . '</strong> ' . $size . ' м²</div>';
         }
         $output .= '<a href="' . get_permalink($venue->ID) . '" class="vp-venue-link">' . __('Подробнее', 'vp-types') . '</a>';
         $output .= '</div>';
@@ -1137,7 +1356,17 @@ function vp_services_shortcode($atts) {
     foreach ($services as $service) {
         $product = wc_get_product($service->ID);
         $thumbnail = get_the_post_thumbnail($service->ID, 'medium');
-        $output .= '<div class="vp-service-price">' . $product->get_price_html() . '</div>';
+        
+        $output .= '<div class="vp-service-item">';
+        if ($thumbnail) {
+            $output .= '<div class="vp-service-thumbnail">' . $thumbnail . '</div>';
+        }
+        $output .= '<h3 class="vp-service-title"><a href="' . get_permalink($service->ID) . '">' . $service->post_title . '</a></h3>';
+        
+        if ($product) {
+            $output .= '<div class="vp-service-price">' . $product->get_price_html() . '</div>';
+        }
+        
         $output .= '<a href="' . get_permalink($service->ID) . '" class="vp-service-link">' . __('Подробнее', 'vp-types') . '</a>';
         $output .= '</div>';
     }
@@ -1212,7 +1441,8 @@ class VP_Template_Loader {
         
         if (in_array($post->post_type, $vp_post_types)) {
             $custom_content = $this->get_vp_custom_content($post);
-            return $content . $custom_content;
+            $contact_form = do_shortcode('[contact-form-7 id="cf51d9b" title="contact-offer"]');
+            return $content . $custom_content . $contact_form;
         }
         
         return $content;
@@ -1225,6 +1455,7 @@ class VP_Template_Loader {
         
         if (in_array($post->post_type, $vp_post_types)) {
             echo $this->get_vp_custom_content($post);
+            echo do_shortcode('[contact-form-7 id="cf51d9b" title="contact-offer"]');
         }
     }
     
@@ -1270,242 +1501,442 @@ class VP_Template_Loader {
         
         return ob_get_clean();
     }
-    
+
+    private function has_group_data($group_data) {
+        if (empty($group_data) || !is_array($group_data)) {
+            return false;
+        }
+        
+        foreach ($group_data as $item) {
+            if (!empty($item) && is_array($item)) {
+                foreach ($item as $value) {
+                    if (!empty(trim($value))) {
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
+    }
+
     private function display_venue_content($post) {
     ?>
     <div class="vp-venue-details">
         <?php
+        $city = get_post_meta($post->ID, 'vp_venue_city', true);
         $address = get_post_meta($post->ID, 'vp_venue_address', true);
         $size = get_post_meta($post->ID, 'vp_venue_size', true);
-        $working_hours = get_post_meta($post->ID, 'vp_venue_working_hours', true);
+        $working_days = get_post_meta($post->ID, 'vp_venue_working_days', true);
+        $chromakey = get_post_meta($post->ID, 'vp_venue_chromakey', true);
+        $videowall = get_post_meta($post->ID, 'vp_venue_videowall', true);
+        $dmx_integration = get_post_meta($post->ID, 'vp_venue_dmx_integration', true);
+        $cameras = get_post_meta($post->ID, 'vp_venue_cameras', true);
         $equipment = get_post_meta($post->ID, 'vp_venue_equipment', true);
-        $lighting = get_post_meta($post->ID, 'vp_venue_lighting', true);
-        $video_system = get_post_meta($post->ID, 'vp_venue_video_system', true);
-        $audio_system = get_post_meta($post->ID, 'vp_venue_audio_system', true);
-        $audio_system_desc = get_post_meta($post->ID, 'vp_venue_audio_system_desc', true);
-        $vp_system = get_post_meta($post->ID, 'vp_venue_vp_system', true);
-        $broadcast = get_post_meta($post->ID, 'vp_venue_broadcast', true);
+        $tracking = get_post_meta($post->ID, 'vp_venue_tracking', true);
+        $calibration = get_post_meta($post->ID, 'vp_venue_calibration', true);
+        $render_servers = get_post_meta($post->ID, 'vp_venue_render_servers', true);
+        $ue_version = get_post_meta($post->ID, 'vp_venue_ue_version', true);
+        $broadcast_capabilities = get_post_meta($post->ID, 'vp_venue_broadcast_capabilities', true);
         ?>
         
-        <?php if ($address): ?>
+        <?php if ($city || $address): ?>
             <div class="vp-venue-info">
-                <h3><?php _e('Адрес', 'vp-types'); ?></h3>
-                <p><?php echo esc_html($address); ?></p>
+                <h3><?php _e('Адрес расположения', 'vp-types'); ?></h3>
+                <?php if ($city): ?>
+                    <p><strong><?php _e('Город:', 'vp-types'); ?></strong> <?php echo esc_html($city); ?></p>
+                <?php endif; ?>
+                <?php if ($address): ?>
+                    <p><strong><?php _e('Адрес:', 'vp-types'); ?></strong> <?php echo esc_html($address); ?></p>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
         
         <?php if ($size): ?>
             <div class="vp-venue-info">
                 <h3><?php _e('Размер площадки', 'vp-types'); ?></h3>
-                <p><?php echo esc_html($size); ?> кв.м</p>
+                <p><?php echo esc_html($size); ?> м²</p>
             </div>
         <?php endif; ?>
         
-        <?php if ($working_hours): ?>
+        <?php if (!empty($working_days)): ?>
             <div class="vp-venue-info">
                 <h3><?php _e('Режим работы', 'vp-types'); ?></h3>
-                <p><?php echo nl2br(esc_html($working_hours)); ?></p>
+                <div class="working-days">
+                    <?php 
+                    $day_labels = array(
+                        'monday'    => 'Пн',
+                        'tuesday'   => 'Вт',
+                        'wednesday' => 'Ср',
+                        'thursday'  => 'Чт',
+                        'friday'    => 'Пт',
+                        'saturday'  => 'Сб',
+                        'sunday'    => 'Вс'
+                    );
+                    
+                    $working_day_names = array();
+                    foreach ($working_days as $day) {
+                        if (isset($day_labels[$day])) {
+                            $working_day_names[] = $day_labels[$day];
+                        }
+                    }
+                    echo implode(', ', $working_day_names);
+                    ?>
+                </div>
             </div>
         <?php endif; ?>
         
-        <?php if (!empty($equipment)): ?>
-            <div class="vp-venue-equipment">
-                <h3><?php _e('Техническое оснащение', 'vp-types'); ?></h3>
-                <?php foreach ($equipment as $item): ?>
-                    <div class="equipment-item">
-                        <h4><?php 
-                            $type = $item['type'];
-                            $type_labels = array(
-                                'chromakey' => 'Хромакей',
-                                'videowall' => 'Видеостена',
-                                'other' => isset($item['other_name']) && !empty($item['other_name']) ? 
-                                    esc_html($item['other_name']) : 'Другое'
-                            );
-                            echo isset($type_labels[$type]) ? $type_labels[$type] : $type;
-                        ?></h4>
-                        <?php if (!empty($item['description'])): ?>
-                            <p><?php echo esc_html($item['description']); ?></p>
-                        <?php endif; ?>
-                        <?php if ($type === 'videowall' && !empty($item['videowall_size'])): ?>
-                            <p><strong>Площадь видеостены:</strong> <?php echo esc_html($item['videowall_size']); ?> кв.м</p>
-                        <?php endif; ?>
-                        <?php if ($type === 'videowall' && !empty($item['videowall_pixel_pitch'])): ?>
-                            <p><strong>Зерно (пиксель):</strong> <?php echo esc_html($item['videowall_pixel_pitch']); ?></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($lighting)): ?>
-            <div class="vp-venue-lighting">
-                <h3><?php _e('Освещение', 'vp-types'); ?></h3>
-                <?php foreach ($lighting as $item): ?>
-                    <div class="lighting-item">
-                        <?php if (!empty($item['name'])): ?>
-                            <h4><?php echo esc_html($item['name']); ?></h4>
-                        <?php endif; ?>
-                        <?php if (!empty($item['power'])): ?>
-                            <p><strong><?php _e('Мощность:', 'vp-types'); ?></strong> <?php echo esc_html($item['power']); ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['vp_integration'])): ?>
-                            <p><strong><?php _e('Интеграция с VP трактом:', 'vp-types'); ?></strong> <?php _e('Да', 'vp-types'); ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['equipment_description'])): ?>
-                            <p><?php echo esc_html($item['equipment_description']); ?></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($video_system)): ?>
-            <div class="vp-venue-video-system">
-                <h3><?php _e('Видеотракт', 'vp-types'); ?></h3>
-                <?php foreach ($video_system as $item): ?>
-                    <div class="video-system-item">
-                        <?php if (!empty($item['camera_count'])): ?>
-                            <p><strong>Количество видеокамер:</strong> <?php echo esc_html($item['camera_count']); ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['genlock'])): ?>
-                            <p><strong>Наличие генлока:</strong> Да</p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['tripods'])): ?>
-                            <p><strong>Штативы:</strong> <?php echo esc_html($item['tripods']); ?></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($audio_system)): ?>
-            <div class="vp-venue-audio-system">
-                <h3><?php _e('Звуковой тракт', 'vp-types'); ?></h3>
-                <?php if (!empty($audio_system_desc)): ?>
-                    <p><?php echo nl2br(esc_html($audio_system_desc)); ?></p>
-                <?php endif; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($vp_system)): ?>
-            <div class="vp-venue-vp-system">
-                <h3><?php _e('VP тракт', 'vp-types'); ?></h3>
-                <?php foreach ($vp_system as $item): ?>
-                    <div class="vp-system-item">
-                        <?php if (!empty($item['tracking_systems'])): ?>
-                            <p><strong>Системы трекинга:</strong> <?php echo esc_html($item['tracking_systems']); ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['render_servers'])): ?>
-                            <p><strong>Рендер-сервера:</strong> <?php echo esc_html($item['render_servers']); ?></p>
-                        <?php endif; ?>
-                        <?php if (!empty($item['game_engine'])): ?>
-                            <p><strong>3D движок:</strong> <?php echo esc_html($item['game_engine']); ?></p>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($broadcast)): ?>
-            <div class="vp-venue-broadcast">
-                <h3><?php _e('Возможности трансляции', 'vp-types'); ?></h3>
-                <p><?php echo nl2br(esc_html($broadcast)); ?></p>
-            </div>
-        <?php endif; ?>
-    </div>
-    <?php
-}
-    
-
-    private function display_production_content($post) {
-    ?>
-    <div class="vp-production-details">
-        <?php
-        $projects = get_post_meta($post->ID, 'vp_production_projects', true);
-        $competency_details = get_post_meta($post->ID, 'vp_production_competency_details', true);
-        $software = get_post_meta($post->ID, 'vp_production_software', true);
-        $has_operators = get_post_meta($post->ID, 'vp_production_has_operators', true);
-        
-        
-        $project_type_labels = array(
-            'movie'          => __('Полный метр', 'vp-types'),
-            'music_video'    => __('Клип', 'vp-types'),
-            'commercial'     => __('Реклама', 'vp-types'),
-            'sports'         => __('Спортивные трансляции', 'vp-types'),
-            'events'         => __('Съемка мероприятий', 'vp-types'),
-            'mocap'          => __('Мокап анимация', 'vp-types'),
-            'corporate'      => __('Корпоративное видео', 'vp-types'),
-            'education'      => __('Образовательный контент', 'vp-types'),
-            'other'          => __('Другое', 'vp-types'),
-        );
-        ?>
-        
-        <?php if (!empty($projects)): ?>
-            <div class="vp-production-projects">
-                <h3><?php _e('Проекты', 'vp-types'); ?></h3>
-                <?php foreach ($projects as $index => $project): ?>
-                    <div class="vp-project-accordion">
-                        <input type="checkbox" id="project-<?php echo $index; ?>" class="vp-project-toggle">
-                        <label for="project-<?php echo $index; ?>" class="vp-project-title">
-                            <?php echo esc_html($project['name']); ?>
-                            <span class="vp-project-type">
-                                (<?php echo isset($project_type_labels[$project['type']]) ? 
-                                    $project_type_labels[$project['type']] : 
-                                    esc_html($project['type']); ?>)
-                            </span>
-                        </label>
-                        <div class="vp-project-content">
-                            <?php if (!empty($project['description'])): ?>
-                                <div class="vp-project-description">
-                                    <?php echo wpautop(esc_html($project['description'])); ?>
-                                </div>
+        <?php if ($this->has_group_data($chromakey)): ?>
+            <div class="vp-venue-chromakey">
+                <h3><?php _e('Хромакей оснащение', 'vp-types'); ?></h3>
+                <?php foreach ($chromakey as $item): ?>
+                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                        <div class="chromakey-item">
+                            <h4><?php _e('Хромакей', 'vp-types'); ?></h4>
+                            <?php if (!empty($item['construction'])): ?>
+                                <p><strong><?php _e('Конструкция:', 'vp-types'); ?></strong> 
+                                    <?php echo $item['construction'] === 'cyclorama' ? 'Циклорама' : 'Полотно'; ?>
+                                </p>
+                            <?php endif; ?>
+                            <div class="dimensions">
+                                <?php if (!empty($item['height'])): ?>
+                                    <span><strong><?php _e('Высота:', 'vp-types'); ?></strong> <?php echo esc_html($item['height']); ?> м</span>
+                                <?php endif; ?>
+                                <?php if (!empty($item['width'])): ?>
+                                    <span><strong><?php _e('Ширина:', 'vp-types'); ?></strong> <?php echo esc_html($item['width']); ?> м</span>
+                                <?php endif; ?>
+                                <?php if (!empty($item['depth'])): ?>
+                                    <span><strong><?php _e('Глубина:', 'vp-types'); ?></strong> <?php echo esc_html($item['depth']); ?> м</span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if (!empty($item['color'])): ?>
+                                <p><strong><?php _e('Цвет:', 'vp-types'); ?></strong> 
+                                    <?php echo $item['color'] === 'green' ? 'Зеленый' : 'Синий'; ?>
+                                </p>
                             <?php endif; ?>
                         </div>
-                    </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->has_group_data($videowall)): ?>
+    <div class="vp-venue-videowall">
+        <h3><?php _e('Видеостена', 'vp-types'); ?></h3>
+        <?php foreach ($videowall as $item): ?>
+            <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                <div class="videowall-item">
+                    <?php if (!empty($item['pixel_pitch'])): ?>
+                        <p><strong><?php _e('Шаг пикселя:', 'vp-types'); ?></strong> <?php echo esc_html($item['pixel_pitch']); ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['area'])): ?>
+                        <p><strong><?php _e('Площадь:', 'vp-types'); ?></strong> <?php echo esc_html($item['area']); ?> м²</p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['processor_brand'])): ?>
+                        <p><strong><?php _e('Процессор марка:', 'vp-types'); ?></strong> <?php echo esc_html($item['processor_brand']); ?></p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['custom_configuration'])): ?>
+                        <p><strong><?php _e('Индивидуальная конфигурация:', 'vp-types'); ?></strong> 
+                            <span class="custom-config-yes"><?php _e('Возможна', 'vp-types'); ?></span>
+                        </p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+        <?php if ($dmx_integration): ?>
+            <div class="vp-venue-lighting">
+                <h3><?php _e('Освещение', 'vp-types'); ?></h3>
+                <p><strong><?php _e('Интеграция DMX:', 'vp-types'); ?></strong> <?php _e('Есть', 'vp-types'); ?></p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($this->has_group_data($cameras)): ?>
+            <div class="vp-venue-cameras">
+                <h3><?php _e('Видеокамеры с GenLock', 'vp-types'); ?></h3>
+                <?php foreach ($cameras as $camera): ?>
+                    <?php if (!empty($camera) && is_array($camera) && array_filter($camera)): ?>
+                        <div class="camera-item">
+                            <?php if (!empty($camera['model'])): ?>
+                                <p><strong><?php _e('Модель:', 'vp-types'); ?></strong> <?php echo esc_html($camera['model']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($camera['count'])): ?>
+                                <p><strong><?php _e('Количество:', 'vp-types'); ?></strong> <?php echo esc_html($camera['count']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->has_group_data($equipment)): ?>
+    <div class="vp-venue-equipment">
+        <h3><?php _e('Штативы/краны/тележки', 'vp-types'); ?></h3>
+        <?php foreach ($equipment as $item): ?>
+            <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                <div class="equipment-item">
+                    <?php if (!empty($item['equipment_type'])): ?>
+                        <p><strong><?php _e('Тип оборудования:', 'vp-types'); ?></strong> 
+                            <?php 
+                            $equipment_types = array(
+                                'tripods' => 'Штативы',
+                                'cranes'  => 'Краны', 
+                                'dollies' => 'Тележки'
+                            );
+                            echo isset($equipment_types[$item['equipment_type']]) ? $equipment_types[$item['equipment_type']] : $item['equipment_type'];
+                            ?>
+                        </p>
+                    <?php endif; ?>
+                    <?php if (!empty($item['count'])): ?>
+                        <p><strong><?php _e('Количество:', 'vp-types'); ?></strong> <?php echo esc_html($item['count']); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+        
+        <?php if ($this->has_group_data($tracking)): ?>
+            <div class="vp-venue-tracking">
+                <h3><?php _e('Системы трекинга', 'vp-types'); ?></h3>
+                <?php foreach ($tracking as $item): ?>
+                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                        <div class="tracking-item">
+                            <?php if (!empty($item['brand'])): ?>
+                                <p><strong><?php _e('Марка:', 'vp-types'); ?></strong> <?php echo esc_html($item['brand']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['count'])): ?>
+                                <p><strong><?php _e('Количество:', 'vp-types'); ?></strong> <?php echo esc_html($item['count']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['area'])): ?>
+                                <p><strong><?php _e('Площадь:', 'vp-types'); ?></strong> <?php echo esc_html($item['area']); ?> м²</p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['height'])): ?>
+                                <p><strong><?php _e('Высота:', 'vp-types'); ?></strong> <?php echo esc_html($item['height']); ?> м</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->has_group_data($calibration)): ?>
+            <div class="vp-venue-calibration">
+                <h3><?php _e('Система калибровки', 'vp-types'); ?></h3>
+                <?php foreach ($calibration as $item): ?>
+                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                        <div class="calibration-item">
+                            <?php if (!empty($item['brand'])): ?>
+                                <p><strong><?php _e('Марка:', 'vp-types'); ?></strong> <?php echo esc_html($item['brand']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['speed_value'])): ?>
+                                <p><strong><?php _e('Скорость калибровки:', 'vp-types'); ?></strong> 
+                                    <?php echo esc_html($item['speed_value']); ?>
+                                    <?php 
+                                    $unit = !empty($item['speed_unit']) ? $item['speed_unit'] : 'hours';
+                                    $unit_labels = array(
+                                        'hours'   => 'часов',
+                                        'minutes' => 'минут', 
+                                        'seconds' => 'секунд'
+                                    );
+                                    echo isset($unit_labels[$unit]) ? $unit_labels[$unit] : 'часов';
+                                    ?>
+                                </p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['lens_file_creation'])): ?>
+                                <p><strong><?php _e('Создание lens файла:', 'vp-types'); ?></strong> 
+                                    <?php echo $item['lens_file_creation'] === 'yes' ? 'Да' : 'Нет'; ?>
+                                </p>
+                            <?php endif; ?>
+                            <?php if (!empty($item['space_calibration'])): ?>
+                                <p><strong><?php _e('Калибровка пространств:', 'vp-types'); ?></strong> 
+                                    <?php echo $item['space_calibration'] === 'yes' ? 'Да' : 'Нет'; ?>
+                                </p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
         
-        <?php if ($competency_details): ?>
-            <div class="vp-production-competencies">
-                <h3><?php _e('Детали компетенций', 'vp-types'); ?></h3>
-                <p><?php echo nl2br(esc_html($competency_details)); ?></p>
+        <?php if ($this->has_group_data($render_servers)): ?>
+            <div class="vp-venue-render-servers">
+                <h3><?php _e('Рендер сервера', 'vp-types'); ?></h3>
+                <?php foreach ($render_servers as $server): ?>
+                    <?php if (!empty($server) && is_array($server) && array_filter($server)): ?>
+                        <div class="render-server-item">
+                            <?php if (!empty($server['gpu_model'])): ?>
+                                <p><strong><?php _e('Модель видеокарты:', 'vp-types'); ?></strong> <?php echo esc_html($server['gpu_model']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($server['capture_card_model'])): ?>
+                                <p><strong><?php _e('Карта видеозахвата:', 'vp-types'); ?></strong> <?php echo esc_html($server['capture_card_model']); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
         <?php endif; ?>
         
-        <?php if ($software): ?>
-            <div class="vp-production-software">
-                <h3><?php _e('Используемое ПО', 'vp-types'); ?></h3>
-                <p><?php echo esc_html($software); ?></p>
+        <?php if ($ue_version): ?>
+            <div class="vp-venue-3d-engine">
+                <h3><?php _e('3D движок', 'vp-types'); ?></h3>
+                <p><strong><?php _e('UE версия:', 'vp-types'); ?></strong> <?php echo esc_html($ue_version); ?></p>
             </div>
         <?php endif; ?>
         
-        <?php if ($has_operators): ?>
-            <div class="vp-production-operators">
-                <h3><?php _e('Операторы', 'vp-types'); ?></h3>
-                <p><?php _e('Компания имеет собственных операторов', 'vp-types'); ?></p>
+        <?php if ($broadcast_capabilities && $broadcast_capabilities !== ''): ?>
+            <div class="vp-venue-broadcast">
+                <h3><?php _e('Возможности VP трансляции', 'vp-types'); ?></h3>
+                <p><?php echo $broadcast_capabilities === 'yes' ? 'Да' : 'Нет'; ?></p>
             </div>
         <?php endif; ?>
     </div>
     <?php
 }
-    
-    private function display_manufacturer_content($post) {
+
+private function display_production_content($post) {
         ?>
-        <div class="vp-manufacturer-details">
+        <div class="vp-production-details">
             <?php
-            $products_description = get_post_meta($post->ID, 'vp_manufacturer_products_description', true);
+            $venue_selection = get_post_meta($post->ID, 'vp_production_venue', true);
+            $project_types = get_post_meta($post->ID, 'vp_production_project_types', true);
+            $competencies = get_post_meta($post->ID, 'vp_production_competencies', true);
+            $has_supervisor = get_post_meta($post->ID, 'vp_production_has_supervisor', true);
+            $certificates_count = get_post_meta($post->ID, 'vp_production_certificates_count', true);
+            
+            $project_type_labels = array(
+                'full_length'       => __('Полный метр', 'vp-types'),
+                'music_videos'      => __('Клипы', 'vp-types'),
+                'advertising'       => __('Реклама', 'vp-types'),
+                'sports_broadcast'  => __('Спортивные трансляции', 'vp-types'),
+                'event_filming'     => __('Съемка мероприятий', 'vp-types'),
+                'mocap_animation'   => __('Мокап анимация', 'vp-types'),
+                'corporate_video'   => __('Корпоративное видео', 'vp-types'),
+                'educational'       => __('Образовательный контент', 'vp-types'),
+            );
+            
+            $competency_labels = array(
+                'virtual_production' => __('Работа с Virtual Production', 'vp-types'),
+                'cgi'               => __('CGI', 'vp-types'),
+                'unreal_engine'     => __('Работа с Unreal Engine (UE)', 'vp-types'),
+            );
             ?>
             
-            <?php if ($products_description): ?>
-                <div class="vp-manufacturer-products">
-                    <h3><?php _e('Описание продукции', 'vp-types'); ?></h3>
-                    <p><?php echo nl2br(esc_html($products_description)); ?></p>
+            <?php if ($venue_selection): ?>
+                <div class="vp-production-venue-status">
+                    <h3><?php _e('Наличие площадки', 'vp-types'); ?></h3>
+                    <?php if ($venue_selection === 'no'): ?>
+                        <p class="venue-status-no"><?php _e('Нет', 'vp-types'); ?></p>
+                    <?php elseif (is_numeric($venue_selection) && get_post($venue_selection)): ?>
+                        <p class="venue-status-yes">
+                            <a href="<?php echo get_permalink($venue_selection); ?>">
+                                <?php echo get_the_title($venue_selection); ?>
+                            </a>
+                        </p>
+                    <?php endif; ?>
                 </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($project_types)): ?>
+                <div class="vp-production-project-types">
+                    <h3><?php _e('Типы проектов', 'vp-types'); ?></h3>
+                    <ul class="project-types-list">
+                        <?php foreach ($project_types as $type): ?>
+                            <?php if (isset($project_type_labels[$type])): ?>
+                                <li><?php echo $project_type_labels[$type]; ?></li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($competencies)): ?>
+                <div class="vp-production-competencies">
+                    <h3><?php _e('Компетенции', 'vp-types'); ?></h3>
+                    <ul class="competencies-list">
+                        <?php foreach ($competencies as $competency): ?>
+                            <?php if (isset($competency_labels[$competency])): ?>
+                                <li><?php echo $competency_labels[$competency]; ?></li>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($has_supervisor && $has_supervisor !== ''): ?>
+                <div class="vp-production-supervisor">
+                    <h3><?php _e('Наличие супервайзера', 'vp-types'); ?></h3>
+                    <p><?php echo $has_supervisor === 'yes' ? 'Да' : 'Нет'; ?></p>
+                </div>
+            <?php endif; ?>
+            <?php if ($certificates_count): ?>
+                    <div class="vp-production-certificates">
+                    <h3><a href="https://vprussia.ru/education/intensives/" target="_blank" rel="noopener noreferrer"><?php _e('Подтвержденная квалификация VP', 'vp-types'); ?></a></h3>
+                     <p><?php echo esc_html($certificates_count); ?> сертификатов</p>
+                    </div>
             <?php endif; ?>
         </div>
         <?php
     }
+    
+    private function display_manufacturer_content($post) {
+    ?>
+    <div class="vp-manufacturer-details">
+        <?php
+        $city = get_post_meta($post->ID, 'vp_manufacturer_city', true);
+        $address = get_post_meta($post->ID, 'vp_manufacturer_address', true);
+        $equipment = get_post_meta($post->ID, 'vp_manufacturer_equipment', true);
+        $services = get_post_meta($post->ID, 'vp_manufacturer_services', true);
+        ?>
+        
+        <?php if ($city || $address): ?>
+            <div class="vp-manufacturer-location">
+                <h3><?php _e('Адрес расположения', 'vp-types'); ?></h3>
+                <?php if ($city): ?>
+                    <p><strong><?php _e('Город:', 'vp-types'); ?></strong> <?php echo esc_html($city); ?></p>
+                <?php endif; ?>
+                <?php if ($address): ?>
+                    <p><strong><?php _e('Адрес:', 'vp-types'); ?></strong> <?php echo esc_html($address); ?></p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($this->has_group_data($equipment)): ?>
+            <div class="vp-manufacturer-equipment">
+                <h3><?php _e('Оборудование', 'vp-types'); ?></h3>
+                <?php foreach ($equipment as $item): ?>
+                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                        <div class="equipment-item">
+                            <?php if (!empty($item['model_name'])): ?>
+                                <h4><?php echo esc_html($item['model_name']); ?></h4>
+                            <?php endif; ?>
+                            <?php if (!empty($item['description'])): ?>
+                                <p><?php echo nl2br(esc_html($item['description'])); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($this->has_group_data($services)): ?>
+            <div class="vp-manufacturer-services">
+                <h3><?php _e('Услуги', 'vp-types'); ?></h3>
+                <?php foreach ($services as $service): ?>
+                    <?php if (!empty($service) && is_array($service) && array_filter($service)): ?>
+                        <div class="service-item">
+                            <?php if (!empty($service['service_description'])): ?>
+                                <p><?php echo nl2br(esc_html($service['service_description'])); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+}
     
     private function display_rental_content($post) {
         ?>
@@ -1524,7 +1955,6 @@ class VP_Template_Loader {
         <?php
     }
     
-
     private function display_specialist_content($post) {
         ?>
         <div class="vp-specialist-details">
@@ -1557,10 +1987,8 @@ class VP_Template_Loader {
         </div>
         <?php
     }
-    
-    /**
-     * Все стили для фронта
-     */
+
+
     public function enqueue_vp_styles() {
         global $post;
         
@@ -1570,137 +1998,223 @@ class VP_Template_Loader {
             wp_add_inline_style('wp-block-library', '
             .vp-venue-details, .vp-production-details, .vp-manufacturer-details, 
             .vp-rental-details, .vp-specialist-details {
-                border-radius: 5px;
-                background: #fff;
-                font-size:1.3rem;
+                margin: 15px 0;
+                padding: 15px;
+                line-height: 1.4;
+                font-size: 16px;
             }
-            .vp-venue-info, .vp-production-projects, .vp-production-competencies,
+            
+            .vp-venue-info, .vp-production-project-types, .vp-production-competencies,
             .vp-manufacturer-products, .vp-rental-conditions, .vp-specialist-position,
-            .vp-venue-equipment, .vp-venue-lighting, .vp-venue-video-system,
-            .vp-venue-audio-system, .vp-venue-vp-system, .vp-venue-broadcast {
-                margin-bottom: 0px;
-                border-bottom: 1px solid #eee;
+            .vp-venue-chromakey, .vp-venue-videowall, .vp-venue-lighting, 
+            .vp-venue-cameras, .vp-venue-equipment, .vp-venue-tracking,
+            .vp-venue-calibration, .vp-venue-render-servers, .vp-venue-3d-engine,
+            .vp-venue-broadcast, .vp-production-supervisor, .vp-production-certificates,
+            .vp-production-venue-status {
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #ddd;
             }
+            
             .vp-venue-details h3, .vp-production-details h3, .vp-manufacturer-details h3,
             .vp-rental-details h3, .vp-specialist-details h3 {
+                margin-bottom: 8px;
+                margin-top: 10px;
+                font-weight: bold;
+                font-size: 18px;
                 color: #333;
-                margin-bottom: 10px;
             }
-            .equipment-item, .project-item, .lighting-item, 
-            .video-system-item, .vp-system-item {
-                margin-bottom: 15px;
-                padding: 10px;
+            
+            .vp-venue-details p, .vp-production-details p, .vp-manufacturer-details p,
+            .vp-rental-details p, .vp-specialist-details p {
+                margin-bottom: 2px !important;
+                margin-top: 0 !important;
+                line-height: 1.4;
+            }
+            
+            /* Переопределяем стандартные отступы темы для entry-content */
+            .entry-content .vp-venue-details p, .entry-content .vp-production-details p, 
+            .entry-content .vp-manufacturer-details p, .entry-content .vp-rental-details p, 
+            .entry-content .vp-specialist-details p {
+                margin-bottom: 2px !important;
+                margin-top: 0 !important;
+            }
+            
+            /* Убираем отступы сверху у первых элементов в секциях */
+            .vp-venue-info p:first-child, .vp-production-venue-status p:first-child {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            .chromakey-item, .videowall-item, .camera-item, .equipment-item,
+            .tracking-item, .calibration-item, .render-server-item {
+                margin-bottom: 8px;
+                padding: 8px;
+                border: 1px solid #eee;
                 background: #f9f9f9;
-                border-radius: 3px;
-            }
-            .equipment-item h4, .project-item h4 {
-                margin-top: 0;
-                color: #444;
-            }
-            .vp-production-details {
-                margin: 20px 0;
-                padding: 20px;
-                border-radius: 5px;
-            }
-
-            .vp-production-projects,
-            .vp-production-competencies,
-            .vp-production-software,
-            .vp-production-operators {
-                margin-bottom: 20px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid #eee;
-            }
-
-            .project-item {
-                margin-bottom: 15px;
-                padding: 15px;
-                background: #fff;
-                border-radius: 3px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            }
-            .vp-project-accordion {
-                margin-bottom: 15px;
             }
             
-            .vp-project-toggle {
-                display: none;
+            .chromakey-item h4, .videowall-item h4, .camera-item h4 {
+                margin-top: 0 !important;
+                margin-bottom: 3px;
+                font-size: 16px;
+                font-weight: bold;
+                padding-top: 0 !important;
             }
             
-            .vp-project-title {
-                display: block;
-                padding: 12px 15px;
-                background: #f5f5f5;
-                color: #333;
-                cursor: pointer;
-                border-radius: 3px;
+            .chromakey-item > *:first-child, .videowall-item > *:first-child, 
+            .camera-item > *:first-child, .equipment-item > *:first-child,
+            .tracking-item > *:first-child, .calibration-item > *:first-child, 
+            .render-server-item > *:first-child {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            .chromakey-item p:first-of-type, .videowall-item p:first-of-type, 
+            .camera-item p:first-of-type, .equipment-item p:first-of-type,
+            .tracking-item p:first-of-type, .calibration-item p:first-of-type, 
+            .render-server-item p:first-of-type {
+                margin-top: 0 !important;
+            }
+
+            .vp-production-certificates h3 a {
+                color: #0073aa;
+                text-decoration: none;
+                border-bottom: 1px dotted #0073aa;
                 transition: all 0.3s ease;
-                border-left: 4px solid #7f96ff;
-                font-weight: 600;
-            }
-            
-            .vp-project-title:hover {
-                background: #e9e9e9;
-            }
-            
-            .vp-project-type {
-                color: #7f8c8d;
-                font-weight: normal;
-                font-size: 0.9em;
-            }
-            
-            .vp-project-content {
-                display: none;
-                padding: 15px;
-                background: #fafafa;
-                border-left: 4px solid #bdc3c7;
-                margin-top: 5px;
-                border-radius: 0 0 3px 3px;
-            }
-            
-            .vp-project-toggle:checked ~ .vp-project-content {
-                display: block;
-            }
-            
-            .vp-project-toggle:checked + .vp-project-title {
-                background: #2c3e50;
-                color: #fff;
-                border-radius: 3px 3px 0 0;
-            }
-            
-            .vp-project-toggle:checked + .vp-project-title .vp-project-type {
-                color: #ecf0f1;
-            }
-            
-            .vp-project-description {
-                line-height: 1.6;
-            }
-            
-            
-            .vp-production-competencies,
-            .vp-production-software,
-            .vp-production-operators {
-                margin-bottom: 20px;
-                padding-bottom: 20px;
-                border-bottom: 1px solid #eee;
             }
 
-            .lighting-item h4 {
-                margin-top: 0;
-                margin-bottom: 10px;
-                color: #2c3e50;
-                font-size: 1.1em;
+            .vp-production-certificates h3 a:hover {
+                color: #005a87;
+                text-decoration: none;
+                border-bottom: 1px solid #005a87;
             }
             
-            .lighting-item p {
+            .dimensions {
                 margin: 5px 0;
-                line-height: 1.5;
             }
             
-            .lighting-item p strong {
-                color: #34495e;
+            .dimensions span {
+                margin-right: 12px;
+                display: inline-block;
+                margin-bottom: 2px;
             }
-            ');
+            
+            .working-days {
+                font-weight: bold;
+                font-size: 16px;
+            }
+            
+            .project-types-list, .competencies-list {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0;
+            }
+            
+            .vp-manufacturer-location, .vp-manufacturer-equipment, .vp-manufacturer-services {
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .vp-manufacturer-equipment .equipment-item, .vp-manufacturer-services .service-item {
+                margin-bottom: 8px;
+                padding: 8px;
+                border: 1px solid #eee;
+                background: #f9f9f9;
+            }
+
+            .vp-manufacturer-equipment .equipment-item h4 {
+                margin-top: 0 !important;
+                margin-bottom: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                padding-top: 0 !important;
+            }
+
+            .vp-manufacturer-equipment .equipment-item p, .vp-manufacturer-services .service-item p {
+                margin-bottom: 3px !important;
+                line-height: 1.4;
+            }
+
+            .vp-manufacturer-equipment .equipment-item > *:first-child, 
+            .vp-manufacturer-services .service-item > *:first-child {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+            }
+            
+            .project-types-list li, .competencies-list li {
+                margin: 3px 0;
+                padding: 5px 8px;
+                background: #f5f5f5;
+                list-style: none;
+                border-left: 3px solid #666;
+            }
+            
+            .venue-status-yes, .venue-status-no {
+                padding: 6px 10px;
+                margin: 5px 0;
+                font-weight: bold;
+            }
+            
+            .venue-status-yes {
+                background: #e8f5e8;
+                border-left: 3px solid #4caf50;
+            }
+            
+            .venue-status-no {
+                background: #ffeaea;
+                border-left: 3px solid #f44336;
+            }
+
+            .custom-config-yes {
+                background: #e8f5e8;
+                color: #2e7d32;
+                padding: 2px 8px;
+                border-radius: 3px;
+                font-weight: bold;
+                font-size: 14px;
+            }
+            
+            .venue-status-yes a {
+                color: #2e7d32;
+                text-decoration: none;
+            }
+            
+            .venue-status-yes a:hover {
+                text-decoration: underline;
+            }
+            
+            .calibration-item p, .chromakey-item p, .videowall-item p, .camera-item p, 
+            .equipment-item p, .tracking-item p, .render-server-item p {
+                margin-bottom: 3px !important;
+                line-height: 1.3;
+            }
+            
+            @media (max-width: 768px) {
+                .vp-venue-details, .vp-production-details, .vp-manufacturer-details,
+                .vp-rental-details, .vp-specialist-details {
+                    padding: 12px;
+                    font-size: 14px;
+                }
+                
+                .vp-venue-details h3, .vp-production-details h3, .vp-manufacturer-details h3,
+                .vp-rental-details h3, .vp-specialist-details h3 {
+                    font-size: 16px;
+                }
+                
+                .dimensions span {
+                    display: block;
+                    margin-bottom: 5px;
+                }
+                
+                .custom-config-yes {
+                font-size: 12px;
+                padding: 1px 6px;
+                }
+            }');
         }
     }
 }
+?>
