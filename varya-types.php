@@ -1720,41 +1720,64 @@ class VP_Template_Loader {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
+        <?php $has_calibration_data = false;
+        if (!empty($calibration) && is_array($calibration)) {
+            foreach ($calibration as $item) {
+                if (!empty($item) && is_array($item)) {
+                    if (!empty(trim($item['brand'] ?? '')) ||
+                        !empty(trim($item['speed_value'] ?? '')) ||
+                        !empty(trim($item['lens_file_creation'] ?? '')) ||
+                        !empty(trim($item['space_calibration'] ?? ''))) {
+                        $has_calibration_data = true;
+                        break;
+                    }
+                }
+            }
+        }
+        ?>
 
-        <?php if ($this->has_group_data($calibration)): ?>
+        <?php if ($has_calibration_data): ?>
             <div class="vp-venue-calibration">
                 <h3><?php _e('Система калибровки', 'vp-types'); ?></h3>
                 <?php foreach ($calibration as $item): ?>
-                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
-                        <div class="calibration-item">
-                            <?php if (!empty($item['brand'])): ?>
-                                <p><strong><?php _e('Марка:', 'vp-types'); ?></strong> <?php echo esc_html($item['brand']); ?></p>
-                            <?php endif; ?>
-                            <?php if (!empty($item['speed_value'])): ?>
-                                <p><strong><?php _e('Скорость калибровки:', 'vp-types'); ?></strong> 
-                                    <?php echo esc_html($item['speed_value']); ?>
-                                    <?php 
-                                    $unit = !empty($item['speed_unit']) ? $item['speed_unit'] : 'hours';
-                                    $unit_labels = array(
-                                        'hours'   => 'часов',
-                                        'minutes' => 'минут', 
-                                        'seconds' => 'секунд'
-                                    );
-                                    echo isset($unit_labels[$unit]) ? $unit_labels[$unit] : 'часов';
-                                    ?>
-                                </p>
-                            <?php endif; ?>
-                            <?php if (!empty($item['lens_file_creation'])): ?>
-                                <p><strong><?php _e('Создание lens файла:', 'vp-types'); ?></strong> 
-                                    <?php echo $item['lens_file_creation'] === 'yes' ? 'Да' : 'Нет'; ?>
-                                </p>
-                            <?php endif; ?>
-                            <?php if (!empty($item['space_calibration'])): ?>
-                                <p><strong><?php _e('Калибровка пространств:', 'vp-types'); ?></strong> 
-                                    <?php echo $item['space_calibration'] === 'yes' ? 'Да' : 'Нет'; ?>
-                                </p>
-                            <?php endif; ?>
-                        </div>
+                    <?php if (!empty($item) && is_array($item)): ?>
+                        <?php
+                        $item_has_data = (!empty(trim($item['brand'] ?? '')) ||
+                                        !empty(trim($item['speed_value'] ?? '')) ||
+                                        !empty(trim($item['lens_file_creation'] ?? '')) ||
+                                        !empty(trim($item['space_calibration'] ?? '')));
+                        ?>
+                        <?php if ($item_has_data): ?>
+                            <div class="calibration-item">
+                                <?php if (!empty($item['brand'])): ?>
+                                    <p><strong><?php _e('Марка:', 'vp-types'); ?></strong> <?php echo esc_html($item['brand']); ?></p>
+                                <?php endif; ?>
+                                <?php if (!empty($item['speed_value'])): ?>
+                                    <p><strong><?php _e('Скорость калибровки:', 'vp-types'); ?></strong> 
+                                        <?php echo esc_html($item['speed_value']); ?>
+                                        <?php 
+                                        $unit = !empty($item['speed_unit']) ? $item['speed_unit'] : 'hours';
+                                        $unit_labels = array(
+                                            'hours'   => 'часов',
+                                            'minutes' => 'минут', 
+                                            'seconds' => 'секунд'
+                                        );
+                                        echo isset($unit_labels[$unit]) ? $unit_labels[$unit] : 'часов';
+                                        ?>
+                                    </p>
+                                <?php endif; ?>
+                                <?php if (!empty($item['lens_file_creation'])): ?>
+                                    <p><strong><?php _e('Создание lens файла:', 'vp-types'); ?></strong> 
+                                        <?php echo $item['lens_file_creation'] === 'yes' ? 'Да' : 'Нет'; ?>
+                                    </p>
+                                <?php endif; ?>
+                                <?php if (!empty($item['space_calibration'])): ?>
+                                    <p><strong><?php _e('Калибровка пространств:', 'vp-types'); ?></strong> 
+                                        <?php echo $item['space_calibration'] === 'yes' ? 'Да' : 'Нет'; ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
