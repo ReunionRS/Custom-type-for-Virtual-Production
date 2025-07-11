@@ -3,7 +3,7 @@
  * Plugin Name: Virtual Production Type Varya LLC
  * Plugin URI: https://github.com/ReunionRS/Custom-type-for-Virtual-Production
  * Description: Кастомные типы записей для портала Vprussia
- * Version: 1.0.1
+ * Version: 1.0.3
  * Author: Ilya Smirnov
  * Author URI: https://www.youtube.com/@IlyaSmirnov-z4n
  * Text Domain: vp-types
