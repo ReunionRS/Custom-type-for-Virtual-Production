@@ -3,7 +3,7 @@
  * Plugin Name: Virtual Production Type Varya LLC
  * Plugin URI: https://github.com/ReunionRS/Custom-type-for-Virtual-Production
  * Description: Кастомные типы записей для портала Vprussia
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Ilya Smirnov
  * Author URI: https://www.youtube.com/@IlyaSmirnov-z4n
  * Text Domain: vp-types
@@ -72,6 +72,7 @@ class VP_Types {
             'hierarchical'        => false,
             'menu_position'       => 5,
             'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
         
@@ -101,6 +102,7 @@ class VP_Types {
             'hierarchical'        => false,
             'menu_position'       => 6,
             'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
         
@@ -130,6 +132,7 @@ class VP_Types {
             'hierarchical'        => false,
             'menu_position'       => 7,
             'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
         
@@ -159,6 +162,7 @@ class VP_Types {
             'hierarchical'        => false,
             'menu_position'       => 8,
             'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
         
@@ -188,6 +192,7 @@ class VP_Types {
             'hierarchical'        => false,
             'menu_position'       => 9,
             'supports'            => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+            'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
         
@@ -767,73 +772,73 @@ class VP_Types {
         ));
         
         $manufacturer_metabox = new_cmb2_box(array(
-    'id'            => 'vp_manufacturer_metabox',
-    'title'         => __('Информация о производителе', 'vp-types'),
-    'object_types'  => array('vp_manufacturer'),
-    'context'       => 'normal',
-    'priority'      => 'high',
-    'show_names'    => true,
-));
+        'id'            => 'vp_manufacturer_metabox',
+        'title'         => __('Информация о производителе', 'vp-types'),
+        'object_types'  => array('vp_manufacturer'),
+        'context'       => 'normal',
+        'priority'      => 'high',
+        'show_names'    => true,
+        ));
 
-$manufacturer_metabox->add_field(array(
-    'name'    => __('Город', 'vp-types'),
-    'id'      => 'vp_manufacturer_city',
-    'type'    => 'text',
-    'default' => 'Москва',
-    'desc'    => __('Город расположения производителя', 'vp-types'),
-));
+        $manufacturer_metabox->add_field(array(
+            'name'    => __('Город', 'vp-types'),
+            'id'      => 'vp_manufacturer_city',
+            'type'    => 'text',
+            'default' => 'Москва',
+            'desc'    => __('Город расположения производителя', 'vp-types'),
+        ));
 
-$manufacturer_metabox->add_field(array(
-    'name'    => __('Адрес', 'vp-types'),
-    'id'      => 'vp_manufacturer_address',
-    'type'    => 'text',
-    'desc'    => __('Полный адрес производителя', 'vp-types'),
-));
+        $manufacturer_metabox->add_field(array(
+            'name'    => __('Адрес', 'vp-types'),
+            'id'      => 'vp_manufacturer_address',
+            'type'    => 'text',
+            'desc'    => __('Полный адрес производителя', 'vp-types'),
+        ));
 
-$equipment_group = $manufacturer_metabox->add_field(array(
-    'id'          => 'vp_manufacturer_equipment',
-    'type'        => 'group',
-    'description' => __('Оборудование', 'vp-types'),
-    'options'     => array(
-        'group_title'   => __('Оборудование {#}', 'vp-types'),
-        'add_button'    => __('Добавить оборудование', 'vp-types'),
-        'remove_button' => __('Удалить', 'vp-types'),
-        'sortable'      => true,
-    ),
-));
+        $equipment_group = $manufacturer_metabox->add_field(array(
+            'id'          => 'vp_manufacturer_equipment',
+            'type'        => 'group',
+            'description' => __('Оборудование', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Оборудование {#}', 'vp-types'),
+                'add_button'    => __('Добавить оборудование', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
 
-$manufacturer_metabox->add_group_field($equipment_group, array(
-    'name'    => __('Название модели', 'vp-types'),
-    'id'      => 'model_name',
-    'type'    => 'text',
-    'desc'    => __('Название/модель оборудования', 'vp-types'),
-));
+        $manufacturer_metabox->add_group_field($equipment_group, array(
+            'name'    => __('Название модели', 'vp-types'),
+            'id'      => 'model_name',
+            'type'    => 'text',
+            'desc'    => __('Название/модель оборудования', 'vp-types'),
+        ));
 
-$manufacturer_metabox->add_group_field($equipment_group, array(
-    'name'    => __('Описание (характеристики)', 'vp-types'),
-    'id'      => 'description',
-    'type'    => 'textarea',
-    'desc'    => __('Подробное описание и характеристики оборудования', 'vp-types'),
-));
+        $manufacturer_metabox->add_group_field($equipment_group, array(
+            'name'    => __('Описание (характеристики)', 'vp-types'),
+            'id'      => 'description',
+            'type'    => 'textarea',
+            'desc'    => __('Подробное описание и характеристики оборудования', 'vp-types'),
+        ));
 
-$services_group = $manufacturer_metabox->add_field(array(
-    'id'          => 'vp_manufacturer_services',
-    'type'        => 'group',
-    'description' => __('Услуги', 'vp-types'),
-    'options'     => array(
-        'group_title'   => __('Услуга {#}', 'vp-types'),
-        'add_button'    => __('Добавить услугу', 'vp-types'),
-        'remove_button' => __('Удалить', 'vp-types'),
-        'sortable'      => true,
-    ),
-));
+        $services_group = $manufacturer_metabox->add_field(array(
+            'id'          => 'vp_manufacturer_services',
+            'type'        => 'group',
+            'description' => __('Услуги', 'vp-types'),
+            'options'     => array(
+                'group_title'   => __('Услуга {#}', 'vp-types'),
+                'add_button'    => __('Добавить услугу', 'vp-types'),
+                'remove_button' => __('Удалить', 'vp-types'),
+                'sortable'      => true,
+            ),
+        ));
 
-$manufacturer_metabox->add_group_field($services_group, array(
-    'name'    => __('Описание услуги', 'vp-types'),
-    'id'      => 'service_description',
-    'type'    => 'textarea',
-    'desc'    => __('Подробное описание предоставляемой услуги', 'vp-types'),
-));
+        $manufacturer_metabox->add_group_field($services_group, array(
+            'name'    => __('Описание услуги', 'vp-types'),
+            'id'      => 'service_description',
+            'type'    => 'textarea',
+            'desc'    => __('Подробное описание предоставляемой услуги', 'vp-types'),
+        ));
         
         $rental_metabox = new_cmb2_box(array(
             'id'            => 'vp_rental_metabox',
@@ -850,6 +855,67 @@ $manufacturer_metabox->add_group_field($services_group, array(
             'type'    => 'textarea',
             'desc'    => __('Общие условия проката оборудования', 'vp-types'),
         ));
+
+$rental_metabox->add_field(array(
+    'name'    => __('Адрес', 'vp-types'),
+    'id'      => 'vp_rental_address',
+    'type'    => 'text',
+    'desc'    => __('Адрес компании проката', 'vp-types'),
+));
+
+$rental_metabox->add_field(array(
+    'name'    => __('Режим работы', 'vp-types'),
+    'id'      => 'vp_rental_working_hours',
+    'type'    => 'text',
+    'desc'    => __('Часы работы компании', 'vp-types'),
+));
+
+$equipment_group = $rental_metabox->add_field(array(
+    'id'          => 'vp_rental_equipment_list',
+    'type'        => 'group',
+    'description' => __('Ассортимент оборудования для Virtual Production', 'vp-types'),
+    'options'     => array(
+        'group_title'   => __('Оборудование {#}', 'vp-types'),
+        'add_button'    => __('Добавить оборудование', 'vp-types'),
+        'remove_button' => __('Удалить', 'vp-types'),
+        'sortable'      => true,
+    ),
+));
+
+$rental_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Тип оборудования', 'vp-types'),
+    'id'      => 'equipment_type',
+    'type'    => 'select',
+    'options' => array(
+        ''                  => __('-- Выберите тип --', 'vp-types'),
+        'cameras_genlock'   => __('Камеры с genlock', 'vp-types'),
+        'tracking_systems'  => __('Трекинг системы', 'vp-types'),
+        'calibration_systems' => __('Системы калибровки', 'vp-types'),
+        'sync_generators'   => __('Синхрогенераторы', 'vp-types'),
+        'render_servers'    => __('Рендер сервера', 'vp-types'),
+        'chromakey'         => __('Хромакей', 'vp-types'),
+        'led_screens'       => __('LED экраны', 'vp-types'),
+        'other'             => __('Другое оборудование', 'vp-types'),
+    ),
+));
+
+$rental_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Модель/Название', 'vp-types'),
+    'id'      => 'model_name',
+    'type'    => 'text',
+));
+
+$rental_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Количество', 'vp-types'),
+    'id'      => 'quantity',
+    'type'    => 'text_small',
+));
+
+$rental_metabox->add_group_field($equipment_group, array(
+    'name'    => __('Описание', 'vp-types'),
+    'id'      => 'description',
+    'type'    => 'textarea_small',
+));
         
         $specialist_metabox = new_cmb2_box(array(
             'id'            => 'vp_specialist_metabox',
@@ -970,6 +1036,61 @@ $manufacturer_metabox->add_group_field($services_group, array(
         if (!class_exists('CMB2')) {
             return;
         }
+
+$rental_connections = new_cmb2_box(array(
+    'id'            => 'vp_rental_connections',
+    'title'         => __('Связи с компаниями', 'vp-types'),
+    'object_types'  => array('vp_rental'),
+    'context'       => 'side',
+    'priority'      => 'default',
+    'show_names'    => true,
+));
+
+$rental_connections->add_field(array(
+    'name'    => __('Связанные площадки', 'vp-types'),
+    'id'      => 'vp_rental_related_venues',
+    'type'    => 'multicheck',
+    'options_cb' => function() {
+        $venues = array();
+        $args = array(
+            'post_type'      => 'vp_venue',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        );
+        
+        $posts = get_posts($args);
+        
+        foreach ($posts as $post) {
+            $venues[$post->ID] = $post->post_title;
+        }
+        
+        return $venues;
+    },
+));
+
+$rental_connections->add_field(array(
+    'name'    => __('Связанные продакшены', 'vp-types'),
+    'id'      => 'vp_rental_related_productions',
+    'type'    => 'multicheck',
+    'options_cb' => function() {
+        $productions = array();
+        $args = array(
+            'post_type'      => 'vp_production',
+            'posts_per_page' => -1,
+            'orderby'        => 'title',
+            'order'          => 'ASC',
+        );
+        
+        $posts = get_posts($args);
+        
+        foreach ($posts as $post) {
+            $productions[$post->ID] = $post->post_title;
+        }
+        
+        return $productions;
+    },
+));
         
         $venue_connections = new_cmb2_box(array(
             'id'            => 'vp_venue_connections',
@@ -1963,20 +2084,112 @@ private function display_production_content($post) {
     
     private function display_rental_content($post) {
         ?>
-        <div class="vp-rental-details">
-            <?php
-            $conditions = get_post_meta($post->ID, 'vp_rental_conditions', true);
-            ?>
-            
-            <?php if ($conditions): ?>
-                <div class="vp-rental-conditions">
-                    <h3><?php _e('Условия проката', 'vp-types'); ?></h3>
-                    <p><?php echo nl2br(esc_html($conditions)); ?></p>
-                </div>
-            <?php endif; ?>
-        </div>
+         <div class="vp-rental-details">
         <?php
-    }
+        $conditions = get_post_meta($post->ID, 'vp_rental_conditions', true);
+        $address = get_post_meta($post->ID, 'vp_rental_address', true);
+        $working_hours = get_post_meta($post->ID, 'vp_rental_working_hours', true);
+        $equipment_list = get_post_meta($post->ID, 'vp_rental_equipment_list', true);
+        ?>
+        
+        <?php if ($address): ?>
+            <div class="vp-rental-address">
+                <h3><?php _e('Адрес', 'vp-types'); ?></h3>
+                <p><?php echo esc_html($address); ?></p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($working_hours): ?>
+            <div class="vp-rental-working-hours">
+                <h3><?php _e('Режим работы', 'vp-types'); ?></h3>
+                <p><?php echo esc_html($working_hours); ?></p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($conditions): ?>
+            <div class="vp-rental-conditions">
+                <h3><?php _e('Условия проката', 'vp-types'); ?></h3>
+                <p><?php echo nl2br(esc_html($conditions)); ?></p>
+            </div>
+        <?php endif; ?>
+        
+        <?php if ($this->has_group_data($equipment_list)): ?>
+            <div class="vp-rental-equipment">
+                <h3><?php _e('Ассортимент оборудования для Virtual Production', 'vp-types'); ?></h3>
+                <?php foreach ($equipment_list as $item): ?>
+                    <?php if (!empty($item) && is_array($item) && array_filter($item)): ?>
+                        <div class="equipment-item">
+                            <?php if (!empty($item['equipment_type'])): ?>
+                                <h4>
+                                    <?php 
+                                    $equipment_types = array(
+                                        'cameras_genlock' => __('Камеры с genlock', 'vp-types'),
+                                        'tracking_systems' => __('Трекинг системы', 'vp-types'),
+                                        'calibration_systems' => __('Системы калибровки', 'vp-types'),
+                                        'sync_generators' => __('Синхрогенераторы', 'vp-types'),
+                                        'render_servers' => __('Рендер сервера', 'vp-types'),
+                                        'chromakey' => __('Хромакей', 'vp-types'),
+                                        'led_screens' => __('LED экраны', 'vp-types'),
+                                        'other' => __('Другое оборудование', 'vp-types'),
+                                    );
+                                    echo isset($equipment_types[$item['equipment_type']]) ? 
+                                         $equipment_types[$item['equipment_type']] : 
+                                         $item['equipment_type'];
+                                    ?>
+                                </h4>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($item['model_name'])): ?>
+                                <p><strong><?php _e('Модель:', 'vp-types'); ?></strong> <?php echo esc_html($item['model_name']); ?></p>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($item['quantity'])): ?>
+                                <p><strong><?php _e('Количество:', 'vp-types'); ?></strong> <?php echo esc_html($item['quantity']); ?></p>
+                            <?php endif; ?>
+                            
+                            <?php if (!empty($item['description'])): ?>
+                                <p><strong><?php _e('Описание:', 'vp-types'); ?></strong> <?php echo nl2br(esc_html($item['description'])); ?></p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+        
+        <?php
+        $related_venues = get_post_meta($post->ID, 'vp_rental_related_venues', true);
+        if (!empty($related_venues)): ?>
+            <div class="vp-rental-related-venues">
+                <h3><?php _e('Связанные площадки', 'vp-types'); ?></h3>
+                <ul>
+                    <?php foreach ($related_venues as $venue_id): ?>
+                        <?php $venue = get_post($venue_id); ?>
+                        <?php if ($venue): ?>
+                            <li><a href="<?php echo get_permalink($venue_id); ?>"><?php echo $venue->post_title; ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+        
+        <?php
+        $related_productions = get_post_meta($post->ID, 'vp_rental_related_productions', true);
+        if (!empty($related_productions)): ?>
+            <div class="vp-rental-related-productions">
+                <h3><?php _e('Связанные продакшены', 'vp-types'); ?></h3>
+                <ul>
+                    <?php foreach ($related_productions as $production_id): ?>
+                        <?php $production = get_post($production_id); ?>
+                        <?php if ($production): ?>
+                            <li><a href="<?php echo get_permalink($production_id); ?>"><?php echo $production->post_title; ?></a></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+}
     
     private function display_specialist_content($post) {
         ?>
@@ -2138,6 +2351,50 @@ private function display_production_content($post) {
                 margin-bottom: 15px;
                 padding-bottom: 8px;
                 border-bottom: 1px solid #ddd;
+            }
+
+            .vp-rental-address, .vp-rental-working-hours, .vp-rental-equipment,
+            .vp-rental-related-venues, .vp-rental-related-productions {
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .vp-rental-equipment .equipment-item {
+                margin-bottom: 8px;
+                padding: 8px;
+                border: 1px solid #eee;
+                background: #f9f9f9;
+            }
+
+            .vp-rental-equipment .equipment-item h4 {
+                margin-top: 0 !important;
+                margin-bottom: 5px;
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .vp-rental-related-venues ul, .vp-rental-related-productions ul {
+                list-style: none;
+                padding: 0;
+                margin: 8px 0;
+            }
+
+            .vp-rental-related-venues li, .vp-rental-related-productions li {
+                margin: 3px 0;
+                padding: 5px 8px;
+                background: #f5f5f5;
+                border-left: 3px solid #666;
+            }
+
+            .vp-rental-related-venues a, .vp-rental-related-productions a {
+                color: #0073aa;
+                text-decoration: none;
+            }
+
+            .vp-rental-related-venues a:hover, .vp-rental-related-productions a:hover {
+                text-decoration: underline;
             }
 
             .vp-manufacturer-equipment .equipment-item, .vp-manufacturer-services .service-item {
