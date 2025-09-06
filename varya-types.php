@@ -3,7 +3,7 @@
  * Plugin Name: Virtual Production Type Varya LLC
  * Plugin URI: https://github.com/ReunionRS/Custom-type-for-Virtual-Production
  * Description: Кастомные типы записей для портала Vprussia
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Ilya Smirnov
  * Author URI: https://www.youtube.com/@IlyaSmirnov-z4n
  * Text Domain: vp-types
@@ -29,16 +29,6 @@ class VP_Types {
                 ?>
                 <div class="notice notice-error">
                     <p><?php _e('VP Types требует установки и активации плагина CMB2.', 'vp-types'); ?></p>
-                </div>
-                <?php
-            });
-        }
-        
-        if (!class_exists('WooCommerce')) {
-            add_action('admin_notices', function() {
-                ?>
-                <div class="notice notice-warning">
-                    <p><?php _e('Для полной функциональности VP Types (товары и услуги) требуется WooCommerce.', 'vp-types'); ?></p>
                 </div>
                 <?php
             });
@@ -195,58 +185,6 @@ class VP_Types {
             'taxonomies' => array('category', 'post_tag'),
             'show_in_rest'        => true,
         ));
-        
-        if (class_exists('WooCommerce')) {
-            register_taxonomy('vp_equipment_type', array('product'), array(
-                'hierarchical'      => true,
-                'labels'            => array(
-                    'name'              => __('Типы оборудования VP', 'vp-types'),
-                    'singular_name'     => __('Тип оборудования VP', 'vp-types'),
-                    'search_items'      => __('Поиск типов оборудования', 'vp-types'),
-                    'all_items'         => __('Все типы оборудования', 'vp-types'),
-                    'parent_item'       => __('Родительский тип оборудования', 'vp-types'),
-                    'parent_item_colon' => __('Родительский тип оборудования:', 'vp-types'),
-                    'edit_item'         => __('Редактировать тип оборудования', 'vp-types'),
-                    'update_item'       => __('Обновить тип оборудования', 'vp-types'),
-                    'add_new_item'      => __('Добавить новый тип оборудования', 'vp-types'),
-                    'new_item_name'     => __('Новый тип оборудования', 'vp-types'),
-                    'menu_name'         => __('Типы оборудования VP', 'vp-types'),
-                ),
-                'show_ui'           => true,
-                'show_admin_column' => true,
-                'query_var'         => true,
-                'rewrite'           => array('slug' => 'vp-equipment-type'),
-                'show_in_rest'      => true,
-            ));
-            
-            register_taxonomy('vp_service_type', array('product'), array(
-                'hierarchical'      => true,
-                'labels'            => array(
-                    'name'              => __('Типы услуг VP', 'vp-types'),
-                    'singular_name'     => __('Тип услуги VP', 'vp-types'),
-                    'search_items'      => __('Поиск типов услуг', 'vp-types'),
-                    'all_items'         => __('Все типы услуг', 'vp-types'),
-                    'parent_item'       => __('Родительский тип услуги', 'vp-types'),
-                    'parent_item_colon' => __('Родительский тип услуги:', 'vp-types'),
-                    'edit_item'         => __('Редактировать тип услуги', 'vp-types'),
-                    'update_item'       => __('Обновить тип услуги', 'vp-types'),
-                    'add_new_item'      => __('Добавить новый тип услуги', 'vp-types'),
-                    'new_item_name'     => __('Новый тип услуги', 'vp-types'),
-                    'menu_name'         => __('Типы услуг VP', 'vp-types'),
-                ),
-                'show_ui'           => true,
-                'show_admin_column' => true,
-                'query_var'         => true,
-                'rewrite'           => array('slug' => 'vp-service-type'),
-                'show_in_rest'      => true,
-            ));
-            
-            add_filter('product_type_selector', function($types) {
-                $types['vp_equipment'] = __('VP оборудование', 'vp-types');
-                $types['vp_service'] = __('VP услуга', 'vp-types');
-                return $types;
-            });
-        }
     }
 
     public function register_taxonomies() {
@@ -639,7 +577,7 @@ class VP_Types {
         ));
         
         $venue_metabox->add_group_field($calibration_group, array(
-            'name'    => __('Калибровка пространств', 'vp-types'),
+            'name'    => __('Калибровка пространства', 'vp-types'),
             'id'      => 'space_calibration',
             'type'    => 'select',
             'options' => array(
@@ -943,93 +881,6 @@ $rental_metabox->add_group_field($equipment_group, array(
             'id'      => 'vp_specialist_contact',
             'type'    => 'textarea_small',
         ));
-
-        if (class_exists('WooCommerce')) {
-            $wc_equipment_metabox = new_cmb2_box(array(
-                'id'            => 'vp_equipment_metabox',
-                'title'         => __('Характеристики VP оборудования', 'vp-types'),
-                'object_types'  => array('product'),
-                'context'       => 'normal',
-                'priority'      => 'high',
-                'show_names'    => true,
-                'show_on_cb'    => function() {
-                    global $post;
-                    if (!$post) return false;
-                    $product_type = get_post_meta($post->ID, '_vp_product_type', true);
-                    return $product_type === 'vp_equipment' || empty($product_type);
-                },
-            ));
-            
-            $wc_equipment_metabox->add_field(array(
-                'name'    => __('Тип VP оборудования', 'vp-types'),
-                'id'      => '_vp_product_type',
-                'type'    => 'select',
-                'options' => array(
-                    'vp_equipment' => __('VP оборудование', 'vp-types'),
-                    'vp_service'   => __('VP услуга', 'vp-types'),
-                ),
-                'default' => 'vp_equipment',
-            ));
-            
-            $wc_equipment_metabox->add_field(array(
-                'name'    => __('Технические характеристики', 'vp-types'),
-                'id'      => '_vp_equipment_specs',
-                'type'    => 'textarea',
-            ));
-            
-            $wc_equipment_metabox->add_field(array(
-                'name'    => __('Связанные компании', 'vp-types'),
-                'id'      => '_vp_related_companies',
-                'type'    => 'multicheck',
-                'options_cb' => function() {
-                    $companies = array();
-                    $types = array('vp_manufacturer', 'vp_rental');
-                    
-                    foreach ($types as $type) {
-                        $args = array(
-                            'post_type'      => $type,
-                            'posts_per_page' => -1,
-                            'orderby'        => 'title',
-                            'order'          => 'ASC',
-                        );
-                        
-                        $posts = get_posts($args);
-                        
-                        foreach ($posts as $post) {
-                            $companies[$post->ID] = $post->post_title . ' (' . $type . ')';
-                        }
-                    }
-                    
-                    return $companies;
-                },
-            ));
-            
-            $wc_service_metabox = new_cmb2_box(array(
-                'id'            => 'vp_service_metabox',
-                'title'         => __('Характеристики VP услуги', 'vp-types'),
-                'object_types'  => array('product'),
-                'context'       => 'normal',
-                'priority'      => 'high',
-                'show_names'    => true,
-                'show_on_cb'    => function() {
-                    global $post;
-                    if (!$post) return false;
-                    return get_post_meta($post->ID, '_vp_product_type', true) === 'vp_service';
-                },
-            ));
-            
-            $wc_service_metabox->add_field(array(
-                'name'    => __('Описание услуги', 'vp-types'),
-                'id'      => '_vp_service_description',
-                'type'    => 'textarea',
-            ));
-            
-            $wc_service_metabox->add_field(array(
-                'name'    => __('Длительность услуги', 'vp-types'),
-                'id'      => '_vp_service_duration',
-                'type'    => 'text_small',
-            ));
-        }
     }
 
     public function register_relationships() {
@@ -1361,142 +1212,6 @@ function vp_rentals_shortcode($atts) {
     return $output;
 }
 add_shortcode('vp_rentals', 'vp_rentals_shortcode');
-
-function vp_equipment_shortcode($atts) {
-    if (!class_exists('WooCommerce')) {
-        return '<p>' . __('Для вывода оборудования требуется WooCommerce', 'vp-types') . '</p>';
-    }
-    
-    $atts = shortcode_atts(array(
-        'limit' => -1,
-        'order' => 'title',
-        'orderby' => 'ASC',
-        'equipment_type' => '',
-    ), $atts);
-    
-    $args = array(
-        'post_type'      => 'product',
-        'posts_per_page' => $atts['limit'],
-        'orderby'        => $atts['order'],
-        'order'          => $atts['orderby'],
-        'meta_query'     => array(
-            array(
-                'key'     => '_vp_product_type',
-                'value'   => 'vp_equipment',
-                'compare' => '=',
-            ),
-        ),
-    );
-    
-    if (!empty($atts['equipment_type'])) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'vp_equipment_type',
-                'field'    => 'slug',
-                'terms'    => explode(',', $atts['equipment_type']),
-            ),
-        );
-    }
-    
-    $equipment = get_posts($args);
-    
-    if (empty($equipment)) {
-        return '<p>' . __('Оборудование не найдено', 'vp-types') . '</p>';
-    }
-    
-    $output = '<div class="vp-equipment-grid">';
-    
-    foreach ($equipment as $item) {
-        $product = wc_get_product($item->ID);
-        $thumbnail = get_the_post_thumbnail($item->ID, 'medium');
-        
-        $output .= '<div class="vp-equipment-item">';
-        if ($thumbnail) {
-            $output .= '<div class="vp-equipment-thumbnail">' . $thumbnail . '</div>';
-        }
-        $output .= '<h3 class="vp-equipment-title"><a href="' . get_permalink($item->ID) . '">' . $item->post_title . '</a></h3>';
-        
-        if ($product) {
-            $output .= '<div class="vp-equipment-price">' . $product->get_price_html() . '</div>';
-        }
-        
-        $output .= '<a href="' . get_permalink($item->ID) . '" class="vp-equipment-link">' . __('Подробнее', 'vp-types') . '</a>';
-        $output .= '</div>';
-    }
-    
-    $output .= '</div>';
-    
-    return $output;
-}
-add_shortcode('vp_equipment', 'vp_equipment_shortcode');
-
-function vp_services_shortcode($atts) {
-    if (!class_exists('WooCommerce')) {
-        return '<p>' . __('Для вывода услуг требуется WooCommerce', 'vp-types') . '</p>';
-    }
-    
-    $atts = shortcode_atts(array(
-        'limit' => -1,
-        'order' => 'title',
-        'orderby' => 'ASC',
-        'service_type' => '',
-    ), $atts);
-    
-    $args = array(
-        'post_type'      => 'product',
-        'posts_per_page' => $atts['limit'],
-        'orderby'        => $atts['order'],
-        'order'          => $atts['orderby'],
-        'meta_query'     => array(
-            array(
-                'key'     => '_vp_product_type',
-                'value'   => 'vp_service',
-                'compare' => '=',
-            ),
-        ),
-    );
-    
-    if (!empty($atts['service_type'])) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'vp_service_type',
-                'field'    => 'slug',
-                'terms'    => explode(',', $atts['service_type']),
-            ),
-        );
-    }
-    
-    $services = get_posts($args);
-    
-    if (empty($services)) {
-        return '<p>' . __('Услуги не найдены', 'vp-types') . '</p>';
-    }
-    
-    $output = '<div class="vp-services-grid">';
-    
-    foreach ($services as $service) {
-        $product = wc_get_product($service->ID);
-        $thumbnail = get_the_post_thumbnail($service->ID, 'medium');
-        
-        $output .= '<div class="vp-service-item">';
-        if ($thumbnail) {
-            $output .= '<div class="vp-service-thumbnail">' . $thumbnail . '</div>';
-        }
-        $output .= '<h3 class="vp-service-title"><a href="' . get_permalink($service->ID) . '">' . $service->post_title . '</a></h3>';
-        
-        if ($product) {
-            $output .= '<div class="vp-service-price">' . $product->get_price_html() . '</div>';
-        }
-        
-        $output .= '<a href="' . get_permalink($service->ID) . '" class="vp-service-link">' . __('Подробнее', 'vp-types') . '</a>';
-        $output .= '</div>';
-    }
-
-    $output .= '</div>';
-
-    return $output;
-}
-add_shortcode('vp_services', 'vp_services_shortcode');
 
 class VP_Template_Loader {
     
@@ -1893,7 +1608,7 @@ class VP_Template_Loader {
                                     </p>
                                 <?php endif; ?>
                                 <?php if (!empty($item['space_calibration'])): ?>
-                                    <p><strong><?php _e('Калибровка пространств:', 'vp-types'); ?></strong> 
+                                    <p><strong><?php _e('Калибровка пространства:', 'vp-types'); ?></strong> 
                                         <?php echo $item['space_calibration'] === 'yes' ? 'Да' : 'Нет'; ?>
                                     </p>
                                 <?php endif; ?>
